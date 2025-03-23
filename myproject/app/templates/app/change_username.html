@@ -1,0 +1,72 @@
+{% extends 'app/layout.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+/* Customizing input field borders */
+    input[type="text"],
+    input[type="password"] {
+        border: 2px solid rgb(203, 108, 230);
+        border-radius: 5px;
+        padding: 5px;
+        width: 100%;
+        max-width: 200px; /* Limit input width */
+        font-size: 12px;
+        text-align: center;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+        border-color: rgb(143, 0, 255);
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(143, 0, 255, 0.5);
+    }
+
+    h2 {
+      margin-top:50px;
+      margin-bottom: 50px;
+      font-family: "Arial Black", serif;
+      font-size: 40px;
+    }
+
+  /* Centering the submit button */
+    .submit-button {
+        border: none;
+        background: none;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        cursor: pointer;
+    }
+
+  .submit-button img {
+    width: 150px;
+    height: auto;
+  }
+
+  /* Styling for back button */
+    .back-button {
+        display: block;
+        margin-top: 20px;
+    }
+
+    .back-button img {
+        width: 20px; /* Adjust image size */
+        height: auto;
+    }
+</style>
+
+  <h2>Change Username</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="submit-button">
+      <img src="{% static 'app/images/save.png' %}" alt="Save">
+  </button>
+  </form>
+  <!-- Back to Profile Image Button -->
+  <div class="back-button">
+    <a href="{% url 'profile' %}">
+        <img src="{% static 'app/images/back.png' %}" alt="Back to Profile">
+    </a>
+</div>
+{% endblock %}

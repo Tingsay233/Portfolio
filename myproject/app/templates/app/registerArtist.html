@@ -1,0 +1,61 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    /* Customizing input field borders */
+    input[type="text"],
+    input[type="password"] {
+        border: 2px solid rgb(203, 108, 230);
+        border-radius: 5px;
+        padding: 5px;
+        width: 100%;
+        max-width: 200px; /* Limit input width */
+        font-size: 12px;
+        text-align: center;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+        border-color: rgb(143, 0, 255);
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(143, 0, 255, 0.5);
+    }
+
+    h3 {
+        margin-top: 50px;
+        margin-bottom: 30px;
+        font-family: "Arial Black", serif;
+        font-size: 40px;
+    }
+
+    /* Centering the submit button */
+    .submit-button {
+        border: none;
+        background: none;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        cursor: pointer;
+    }
+
+    .submit-button img {
+        width: 150px;
+        height: auto;
+    }
+</style>
+
+    <br>
+    <h3>Register as Artist</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="submit-button">
+            <img src="{% static 'app/images/confirm_button.png' %}" alt="Sign Up">
+        </button>
+    </form>
+    <br>
+    <br>
+    <h4>Become an Artist</h4>
+    <p>Artists can upload their music for free.</p>
+{% endblock %}

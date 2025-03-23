@@ -1,0 +1,49 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    h2 {
+        margin-top: 50px;
+        margin-bottom: 50px;
+        font-family: "Arial Black", serif;
+        font-size: 40px;
+    }
+</style>
+
+<h2>Music Library</h2>
+<ul>
+    {% for music in music_files %}
+    <li>
+        <strong>{{ music.title }}</strong> by {{ music.artist }}
+        <br>
+        <audio controls>
+            <source src="{{ music.music_file.url }}" type="audio/mpeg">
+        </audio>
+        <br>
+
+        <!-- Comment Button (Image) -->
+        <a href="{% url 'put_comment' music.id %}">
+            <img src="{% static 'app/images/comment.png' %}" alt="Comment" width="40">
+        </a>
+
+        <!-- Download Button (Image) -->
+        <a href="{{ music.music_file.url }}" download="{{ music.title }}.mp3">
+            <img src="{% static 'app/images/download.png' %}" alt="Download" width="40">
+        </a>
+
+        <!-- Share Button (Image) -->
+        <a href="{% url 'share_music' music.id %}">
+            <img src="{% static 'app/images/share.png' %}" alt="Share" width="40">
+        </a>
+
+        <!-- Add to Playlist Button (Image) -->
+        <a href="{% url 'add_to_playlist' music.id %}">
+            <img src="{% static 'app/images/playlist.png' %}" alt="Add to Playlist" width="40">
+        </a>
+
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

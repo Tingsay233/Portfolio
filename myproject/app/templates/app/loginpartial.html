@@ -1,0 +1,18 @@
+{% if user.is_authenticated %}
+<form id="logoutForm" action="/logout" method="post" class="navbar-right">
+    {% csrf_token %}
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a></li>
+        <li><a href="{% url 'delete_acc' %}">Delete Account</a></li>
+    </ul>
+</form>
+
+{% else %}
+
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="{% url 'login' %}">Log in</a></li>
+    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+
+</ul>
+
+{% endif %}

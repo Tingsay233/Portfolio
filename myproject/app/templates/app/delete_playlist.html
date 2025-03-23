@@ -1,0 +1,50 @@
+{% extends 'app/layout.html' %}
+
+{% block content %}
+{% load static %}
+
+<style>
+  /* Styling for back button */
+      .back-button {
+          display: block;
+          margin-top: 20px;
+      }
+  
+      .back-button img {
+          width: 20px; /* Adjust image size */
+          height: auto;
+      }
+  
+      /* Centering the submit button */
+      .submit-button {
+          border: none;
+          background: none;
+          margin-top: 50px;
+          margin-bottom: 50px;
+          cursor: pointer;
+      }
+  
+    .submit-button img {
+      width: 150px;
+      height: auto;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-family: "Arial Black", serif;
+      font-size: 40px;
+  }
+  </style>
+
+<h2>Delete Playlist</h2>
+<p>Are you sure you want to delete "{{ playlist.name }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+     <button type="submit" class="submit-button">
+      <img src="{% static 'app/images/delete.png' %}" alt="Sign Up">
+     </button>
+</form>
+
+<a href="{% url 'playlist_list' %}">Cancel</a>
+{% endblock %}

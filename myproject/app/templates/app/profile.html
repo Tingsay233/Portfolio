@@ -1,0 +1,62 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<style>
+/* Centering the submit button */
+    .submit-button {
+        border: none;
+        background: none;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        cursor: pointer;
+    }
+
+    .submit-button img {
+        width: 150px;
+        height: auto;
+    }
+
+    h2 {
+        margin-top: 50px;
+        margin-bottom: 30px;
+        font-family: "Arial Black", serif;
+        font-size: 40px;
+    }
+</style>
+
+<div style="text-align: center; max-width: 500px; margin: 0 auto;">
+    <h2>Update Your Profile</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Personal Information</legend>
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            <button type="submit" class="submit-button">
+                <img src="{% static 'app/images/save.png' %}" alt="Save">
+            </button>
+        </fieldset>
+    </form>
+
+    <div style="margin-top: 10px;">
+        <a href="{% url 'password_change' %}">
+            <img src="{% static 'app/images/changepassword.png' %}" alt="Change Password" width="250">
+        </a>
+        <br>
+        <br>
+        <br>
+        <a href="{% url 'change_username' %}">
+            <img src="{% static 'app/images/changeusername.png' %}" alt="Change Username" width="250">
+        </a>
+    </div>
+</div>
+{% endblock %}

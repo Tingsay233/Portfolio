@@ -1,0 +1,76 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    body {
+        background-color: white; /* Set background to plain white */
+    }
+    .logo-container {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .logo-container img {
+        width: 300px; /* Adjust size as needed */
+        height: auto;
+    }
+    .welcome-logo {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .welcome-logo img{
+        width: 500px; /* Corrected width with px */
+        height: auto;
+    }
+    .button-container {
+        margin-top: 50px;
+        margin-bottom: 100px;
+        display: flex;
+        flex-direction: column; /* Ensures buttons are listed vertically */
+        align-items: center; /* Centers buttons */
+        justify-content: center;
+        gap: 15px; /* Space between buttons */
+    }
+    .action-button {
+        max-width: 300px; /* Ensures both buttons have the same width */
+        height: 60px; /* Ensures both buttons have the same height */
+        object-fit: contain; /* Ensures image scaling without distortion */
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .action-button:hover {
+        transform: scale(1.1); /* Slight zoom effect on hover */
+    }
+    .logo-text {
+        font-family: 'Times New Roman', Times, serif; /* Set font to Times New Roman */
+        font-size: 22px; /* Adjust size as needed */
+        font-weight: bold; /* Make it stand out */
+        font-style: italic; /* Make text italic */
+        color: #333; /* Change text color if needed */
+        margin-top: 10px;
+    }
+</style>
+</head>
+
+<body>
+<div class="logo-container">
+    <img src="{% static 'app/images/logo.png' %}" alt="Music Sharing App Logo">
+    <p class="logo-text">Let's Get Started !</p>
+</div>
+
+<div class="welcome-logo">
+<br>
+<img src="{% static 'app/images/welcome_label.png' %}" alt="Welcome Label">
+    <div class="button-container">
+        <a href="{% url 'login' %}">
+            <img src="{% static 'app/images/loginB.png' %}" alt="Login Button" class="action-button">
+        </a>
+        <a href="{% url 'signup' %}">
+            <img src="{% static 'app/images/signup.png' %}" alt="Signup Button" class="action-button">
+        </a>
+    </div>
+</div>
+
+{% endblock %}

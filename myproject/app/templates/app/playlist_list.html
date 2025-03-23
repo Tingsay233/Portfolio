@@ -1,0 +1,103 @@
+{% extends 'app/layout.html' %}
+
+{% block content %}
+{% load static %}
+
+<style>
+  /* Styling for back button */
+      .back-button {
+          display: block;
+          margin-top: 20px;
+      }
+  
+      .back-button img {
+          width: 20px; /* Adjust image size */
+          height: auto;
+      }
+  
+      /* Centering the submit button */
+      .submit-button {
+          border: none;
+          background: none;
+          margin-top: 50px;
+          margin-bottom: 50px;
+          cursor: pointer;
+      }
+  
+    .submit-button img {
+      width: 150px;
+      height: auto;
+    }
+
+    /* Centering the submit button */
+      .remove-button {
+          border: none;
+          background: none;
+          margin-top:10px;
+          margin-bottom: 10px;
+          cursor: pointer;
+      }
+  
+    .remove-button img {
+      width: 20px;
+      height: auto;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-family: "Arial Black", serif;
+      font-size: 40px;
+  }
+  </style>
+
+<h2>Your Playlists</h2>
+
+{% if playlists %}
+    <ul>
+        {% for playlist in playlists %}
+            <li>
+                <strong>{{ playlist.name }}</strong> ({{ playlist.songs.count }} songs)
+                <ul>
+                    {% for song in playlist.songs.all %}
+                        <li>
+                            <p>{{ song.title }} by {{ song.artist }}</p>
+                            {% if song.music_file %}
+                                <audio controls>
+                                    <source src="{{ song.music_file.url }}" type="audio/mpeg">
+                                    Your browser does not support the audio element.
+                                </audio>
+                            {% else %}
+                                <p>No audio file available.</p>
+                            {% endif %}
+
+                            <!-- Remove Song Button -->
+                            <form method="post" action="{% url 'remove_from_playlist' playlist.id song.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="remove-button">
+                                    <img src="{% static 'app/images/remove.png' %}" alt="Sign Up">
+                                </button>
+                            </form>
+                        </li>
+                    {% empty %}
+                        <li>No songs in this playlist.</li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Delete Playlist Button -->
+                <form method="post" action="{% url 'delete_playlist' playlist.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="submit-button">
+                        <img src="{% static 'app/images/delete.png' %}" alt="Sign Up">
+                    </button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You have no playlists yet.</p>
+{% endif %}
+
+<a href="{% url 'create_playlist' %}">
+    <img src="{% static 'app/images/new.png' %}" alt="Change Username" width="100">
+</a>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<style>
+/* Styling for back button */
+    .back-button {
+        display: block;
+        margin-top: 20px;
+    }
+
+    .back-button img {
+        width: 20px; /* Adjust image size */
+        height: auto;
+    }
+
+    /* Centering the submit button */
+    .submit-button {
+        border: none;
+        background: none;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        cursor: pointer;
+    }
+
+  .submit-button img {
+    width: 150px;
+    height: auto;
+  }
+</style>
+
+<h2>{{ music.title }} by {{ music.artist }}</h2>
+
+<audio controls>
+    <source src="{{ music.music_file.url }}" type="audio/mpeg">
+</audio>
+
+<h3>Comments</h3>
+<ul>
+    {% for comment in comments %}
+    <li>
+        <strong>{{ comment.user.username }}</strong>: {{ comment.text }}
+        <br>
+        <small>{{ comment.created_at }}</small>
+    </li>
+    {% empty %}
+    {% endfor %}
+</ul>
+
+<h3>Leave a Comment</h3>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="submit-button">
+        <img src="{% static 'app/images/post.png' %}" alt="Sign Up">
+    </button>
+</form>
+
+<!-- Back to Profile Image Button -->
+  <div class="back-button">
+    <a href="{% url 'music_list' %}">
+        <img src="{% static 'app/images/back.png' %}" alt="Back to Profile">
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    /* Customizing input field borders */
+    input[type="text"],
+    input[type="password"] {
+        border: 2px solid rgb(203, 108, 230);
+        border-radius: 5px;
+        padding: 5px;
+        width: 100%;
+        max-width: 200px; /* Limit input width */
+        font-size: 12px;
+        text-align: center;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+        border-color: rgb(143, 0, 255);
+        outline: none;
+        box-shadow: 0px 0px 5px rgba(143, 0, 255, 0.5);
+    }
+
+    h2 {
+        margin-top: 50px;
+        margin-bottom: 30px;
+        font-family: "Arial Black", serif;
+        font-size: 40px;
+    }
+
+    /* Centering the submit button */
+    .submit-button {
+        border: none;
+        background: none;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        cursor: pointer;
+    }
+
+    .submit-button img {
+        width: 150px;
+        height: auto;
+    }
+</style>
+
+<h2>Submit an Issue</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="id_title">Title</label>
+        <input type="text" class="form-control" id="id_title" name="title" placeholder="Enter issue title">
+    </div>
+
+    <div class="form-group">
+        <label for="id_description">Description</label>
+        <textarea class="form-control" id="id_description" name="description" rows="4" placeholder="Describe your problem"></textarea>
+    </div>
+
+    <button type="submit" class="submit-button">
+        <img src="{% static 'app/images/confirm_button.png' %}" alt="Sign Up">
+    </button>
+</form>
+
+{% endblock %}
