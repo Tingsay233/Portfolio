@@ -821,3 +821,224 @@ section:last-child {
   .zone-banner { animation: zoneOut 0.01s ease 1.7s both; }
   .quest-card::after { transition: none; }
 }
+
+/* ==========================================================================
+   Quest Log — filterable card grid
+   ========================================================================== */
+
+.quest-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+/* --- Filter tabs: active dark, the rest recede --- */
+.quest-filters {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.2rem;
+}
+
+.quest-filter {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.2rem 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  opacity: 0.65;
+  transition: color 0.2s, opacity 0.2s;
+}
+.quest-filter::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.quest-filter:hover { color: var(--navy-800); opacity: 1; }
+.quest-filter:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.quest-filter.is-active {
+  color: var(--navy-900);
+  opacity: 1;
+}
+.quest-filter.is-active::after { transform: scaleX(1); }
+
+.quest-filter-count {
+  font-family: var(--font-retro);
+  font-size: 0.95rem;
+  color: var(--ink-muted);
+}
+.quest-filter.is-active .quest-filter-count { color: var(--accent); }
+
+/* --- Grid --- */
+.quest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: dense;   /* a wide tile must never leave a hole beside it */
+  gap: 1.25rem;
+  align-items: start;
+}
+.quest-tile.is-flagship { grid-column: span 2; }
+
+@media (max-width: 980px) {
+  .quest-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .quest-grid { grid-template-columns: 1fr; }
+  .quest-tile.is-flagship { grid-column: span 1; }
+  .quest-head { align-items: flex-start; }
+}
+
+/* --- Tile --- */
+.quest-tile {
+  gap: 0.4rem;
+  padding: 1.35rem 1.4rem 1.1rem;
+}
+.quest-tile.is-flagship { background: var(--cream-100); }
+.quest-tile.is-open { box-shadow: 7px 7px 0 var(--ink); }
+
+.quest-tile-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+.quest-num {
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  line-height: 2;
+}
+.quest-badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  background: var(--accent);
+  color: var(--cream-50);
+  border-radius: 3px;
+}
+
+.quest-sigil {
+  width: 42px;
+  height: 42px;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  shape-rendering: crispEdges;
+  transition: color 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.quest-tile:hover .quest-sigil {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.quest-title {
+  font-size: 1.05rem;
+  line-height: 1.3;
+  text-wrap: balance;
+  /* Reserve two lines so subtitles and footers line up across a row */
+  min-height: 2.73rem;
+}
+.quest-subtitle {
+  font-size: 0.76rem;
+  color: var(--ink-muted);
+  margin-bottom: 0.5rem;
+}
+.quest-blurb {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.quest-detail {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.35rem 0 0.5rem;
+  animation: questDetail 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes questDetail {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+.quest-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.quest-link { font-size: 0.78rem; padding: 0.35rem 0.8rem; }
+
+.quest-tile-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 2px dashed var(--border);
+}
+.quest-stack-peek {
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The + affordance from the reference, rebuilt in pixel */
+.quest-expand {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--cream-50);
+  background: var(--navy-800);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: background 0.15s, transform 0.1s ease, box-shadow 0.1s ease;
+}
+.quest-expand:hover {
+  background: var(--accent);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.quest-expand:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.quest-expand:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* The hover sparkle would collide with the badge on flagship tiles */
+.quest-tile.is-flagship::after { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .quest-detail,
+  .quest-sigil,
+  .quest-filter::after { animation: none; transition: none; }
+}
