@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import TypewriterText from '../components/TypewriterText.jsx';
+import { useAchievements } from '../lib/AchievementContext.jsx';
 
 const COLS = 5;
 const ROWS = 8;
@@ -170,6 +171,7 @@ export default function ChessDemo() {
   const [winner,    setWinner]    = useState(null);
   const [lastMove,  setLastMove]  = useState(null);
   const [flipped,   setFlipped]   = useState(false);
+  const { unlock } = useAchievements();
 
   const handleClick = useCallback((col, row) => {
     if (winner) return;
@@ -194,8 +196,12 @@ export default function ChessDemo() {
     setFlipped(f => !f);
     setBlueTurn(t => !t);
     setSelected(null); setLegalMvs([]);
-    if (result.winner) setWinner(result.winner);
-  }, [pieces, selected, legalMvs, blueTurn, fullTurns, winner]);
+    unlock('opening-move');
+    if (result.winner) {
+      setWinner(result.winner);
+      unlock('sau-slayer');
+    }
+  }, [pieces, selected, legalMvs, blueTurn, fullTurns, winner, unlock]);
 
   function reset() {
     setPieces(initPieces()); setSelected(null); setLegalMvs([]);
@@ -206,7 +212,7 @@ export default function ChessDemo() {
   const torXorIn = 4 - (fullTurns % 4);
 
   return (
-    <section id="play" style={{ background: 'var(--cream-50)' }}>
+    <section id="play-chess" style={{ background: 'var(--cream-50)' }}>
       <div className="container">
         <span className="section-label">Mini Games</span>
         <TypewriterText text="Kwazam Chess" style={{ marginBottom: '1.5rem' }} />

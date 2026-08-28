@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import TypewriterText from '../components/TypewriterText.jsx';
 import { getEntries, addEntry } from '../lib/guestbookStorage.js';
+import { useAchievements } from '../lib/AchievementContext.jsx';
 
 function formatDate(iso) {
   const d = new Date(iso);
@@ -26,6 +27,7 @@ export default function Guestbook() {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const { unlock } = useAchievements();
 
   useEffect(() => {
     getEntries().then((stored) => {
@@ -47,6 +49,7 @@ export default function Guestbook() {
     setName('');
     setMessage('');
     setSubmitting(false);
+    unlock('scribe');
   }
 
   return (

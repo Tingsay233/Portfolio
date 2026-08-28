@@ -1,4 +1,5 @@
 import TypewriterText from '../components/TypewriterText.jsx';
+import { useAchievements } from '../lib/AchievementContext.jsx';
 
 const LINKS = [
   { label: 'Email', value: 'sitingsay@gmail.com', href: 'mailto:sitingsay@gmail.com' },
@@ -7,6 +8,8 @@ const LINKS = [
 ];
 
 export default function Contact() {
+  const { unlock } = useAchievements();
+
   return (
     <section id="contact" style={{ background: 'var(--navy-900)', color: 'var(--cream-100)' }}>
       <div className="container">
@@ -32,6 +35,7 @@ export default function Contact() {
               href={link.href}
               target={link.href.startsWith('http') ? '_blank' : undefined}
               rel="noopener noreferrer"
+              onClick={() => unlock('pen-pal')}
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',

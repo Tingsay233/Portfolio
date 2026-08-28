@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import TypewriterText from '../components/TypewriterText.jsx';
+import { useAchievements } from '../lib/AchievementContext.jsx';
 
 const PROJECTS = [
   {
@@ -202,6 +203,7 @@ export default function Projects() {
 
 function ProjectCard({ project, visible, index }) {
   const isFlagship = project.accent === 'flagship';
+  const { unlock } = useAchievements();
 
   return (
     <div
@@ -256,6 +258,7 @@ function ProjectCard({ project, visible, index }) {
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => unlock('source-diver')}
                 className="btn btn-secondary"
                 style={{ fontSize: '0.8rem', padding: '0.4rem 0.9rem' }}
               >

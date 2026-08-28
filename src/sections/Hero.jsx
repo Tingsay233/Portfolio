@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAchievements } from '../lib/AchievementContext.jsx';
 
 const FUN_FACTS = [
   "Once wrote a prose poem from the POV of a bread loaf 🍞",
@@ -73,6 +74,7 @@ export default function Hero() {
   const [showButtons, setShowButtons] = useState(false);
   const [showArrow,   setShowArrow]   = useState(false);
   const [showFacts,   setShowFacts]   = useState(false);
+  const { unlock } = useAchievements();
 
   // Fun facts rotation
   useEffect(() => {
@@ -237,7 +239,12 @@ export default function Hero() {
               style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', animation: 'heroEnter 0.4s ease both' }}
             >
               <a href="#projects" className="btn btn-primary">See my work →</a>
-              <a href="/resume.pdf" className="btn btn-secondary" download="SiTing_Resume.pdf">
+              <a
+                href="/resume.pdf"
+                className="btn btn-secondary"
+                download="SiTing_Resume.pdf"
+                onClick={() => unlock('recruiter')}
+              >
                 ↓ Download resume
               </a>
             </div>

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import TypewriterText from '../components/TypewriterText.jsx';
+import { useAchievements } from '../lib/AchievementContext.jsx';
 
 /*
  * RFM segmentation logic — simplified version of the FYP's scoring.
@@ -47,13 +48,25 @@ export default function ChurnDemo() {
   const [frequency, setFrequency] = useState(8);
   const [monetary, setMonetary] = useState(500);
 
+  const { unlock } = useAchievements();
+  const tuned = useRef(new Set());
+
+  // Unlocks once the visitor has experimented with all three RFM dimensions.
+  function tune(dimension, setter) {
+    return (value) => {
+      setter(value);
+      tuned.current.add(dimension);
+      if (tuned.current.size === 3) unlock('analyst');
+    };
+  }
+
   const r = rScore(recency);
   const f = fScore(frequency);
   const m = mScore(monetary);
   const seg = segment(r, f, m);
 
   return (
-    <section id="play" style={{ background: 'var(--cream-100)' }}>
+    <section id="play-churn" style={{ background: 'var(--cream-100)' }}>
       <div className="container">
         <span className="section-label">Play · Demo 1</span>
         <TypewriterText text="Try the churn classifier." style={{ marginBottom: '0.5rem' }} />
@@ -77,7 +90,7 @@ export default function ChurnDemo() {
               label="Days since last purchase"
               suffix="days"
               value={recency}
-              setValue={setRecency}
+              setValue={tune('recency', setRecency)}
               min={0}
               max={365}
               hint={r}
@@ -86,7 +99,7 @@ export default function ChurnDemo() {
               label="Total orders"
               suffix="orders"
               value={frequency}
-              setValue={setFrequency}
+              setValue={tune('frequency', setFrequency)}
               min={1}
               max={30}
               hint={f}
@@ -95,7 +108,7 @@ export default function ChurnDemo() {
               label="Total spend"
               suffix="MYR"
               value={monetary}
-              setValue={setMonetary}
+              setValue={tune('monetary', setMonetary)}
               min={10}
               max={3000}
               step={10}

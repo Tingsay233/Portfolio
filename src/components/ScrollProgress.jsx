@@ -5,7 +5,7 @@ const SECTIONS = [
   { id: 'about',      label: 'About'      },
   { id: 'projects',   label: 'Quest Log'  },
   { id: 'experience', label: 'Journal'    },
-  { id: 'play',       label: 'Mini Games' },
+  { id: 'play-churn', label: 'Mini Games' },
   { id: 'guestbook',  label: 'Guestbook'  },
   { id: 'contact',    label: 'Contact'    },
 ];

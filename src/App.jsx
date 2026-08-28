@@ -3,6 +3,8 @@ import Nav from './components/Nav.jsx';
 import ScrollProgress from './components/ScrollProgress.jsx';
 import PixelParticles from './components/PixelParticles.jsx';
 import Marquee from './components/Marquee.jsx';
+import AchievementHUD from './components/AchievementHUD.jsx';
+import AchievementToast from './components/AchievementToast.jsx';
 import Hero from './sections/Hero.jsx';
 import About from './sections/About.jsx';
 import Projects from './sections/Projects.jsx';
@@ -12,8 +14,18 @@ import ChessDemo from './sections/ChessDemo.jsx';
 import Guestbook from './sections/Guestbook.jsx';
 import Contact from './sections/Contact.jsx';
 import Footer from './components/Footer.jsx';
+import { useAchievements } from './lib/AchievementContext.jsx';
+
+// Sections that award an achievement once the visitor actually reads them.
+const SECTION_ACHIEVEMENTS = [
+  ['about', 'backstory'],
+  ['projects', 'quest-log'],
+  ['experience', 'journal'],
+];
 
 export default function App() {
+  const { unlock } = useAchievements();
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -47,6 +59,38 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
+  // Landing on the page is itself the first achievement.
+  useEffect(() => {
+    unlock('arrival');
+  }, [unlock]);
+
+  // Award section achievements once a section has actually been read.
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.dataset.achievement;
+          if (id) unlock(id);
+          observer.unobserve(entry.target);
+        });
+      },
+      // Only the 10%-30% band of the viewport counts, so a section has to be
+      // scrolled up near the top of the screen before it unlocks. A plain
+      // threshold would fire on load for anything peeking above the fold.
+      { rootMargin: '-10% 0px -70% 0px', threshold: 0 }
+    );
+
+    SECTION_ACHIEVEMENTS.forEach(([sectionId, achievementId]) => {
+      const el = document.getElementById(sectionId);
+      if (!el) return;
+      el.dataset.achievement = achievementId;
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [unlock]);
+
   return (
     <>
       <ScrollProgress />
@@ -69,6 +113,9 @@ export default function App() {
       </main>
 
       <Footer />
+
+      <AchievementToast />
+      <AchievementHUD />
     </>
   );
 }
