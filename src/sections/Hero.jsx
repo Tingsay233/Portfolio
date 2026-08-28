@@ -63,7 +63,7 @@ function typeString(text, setter, speed) {
 
 const wait = ms => new Promise(r => setTimeout(r, ms));
 
-export default function Hero() {
+export default function Hero({ start = true }) {
   const [factIdx,     setFactIdx]     = useState(0);
   const [mouse,       setMouse]       = useState({ x: 0, y: 0 });
   const [greeting,    setGreeting]    = useState('');
@@ -92,8 +92,9 @@ export default function Hero() {
     return () => window.removeEventListener('mousemove', onMove);
   }, []);
 
-  // Sequential typewriter
+  // Sequential typewriter — waits for the title screen so the visitor sees it
   useEffect(() => {
+    if (!start) return;
     async function run() {
       await wait(350);
 
@@ -121,7 +122,7 @@ export default function Hero() {
       setShowFacts(true);
     }
     run();
-  }, []);
+  }, [start]);
 
   // Skip — instantly complete everything
   function skip() {

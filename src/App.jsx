@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Nav from './components/Nav.jsx';
 import ScrollProgress from './components/ScrollProgress.jsx';
 import PixelParticles from './components/PixelParticles.jsx';
 import Marquee from './components/Marquee.jsx';
 import AchievementHUD from './components/AchievementHUD.jsx';
 import AchievementToast from './components/AchievementToast.jsx';
+import BootScreen from './components/BootScreen.jsx';
+import ZoneBanner from './components/ZoneBanner.jsx';
+import LevelUpModal from './components/LevelUpModal.jsx';
 import Hero from './sections/Hero.jsx';
 import About from './sections/About.jsx';
 import Projects from './sections/Projects.jsx';
@@ -25,6 +28,8 @@ const SECTION_ACHIEVEMENTS = [
 
 export default function App() {
   const { unlock } = useAchievements();
+  const [booted, setBooted] = useState(false);
+  const handleBooted = useCallback(() => setBooted(true), []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -59,13 +64,15 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
-  // Landing on the page is itself the first achievement.
+  // Landing on the page is itself the first achievement — but only once the
+  // title screen is out of the way, or its toast plays behind the overlay.
   useEffect(() => {
-    unlock('arrival');
-  }, [unlock]);
+    if (booted) unlock('arrival');
+  }, [booted, unlock]);
 
   // Award section achievements once a section has actually been read.
   useEffect(() => {
+    if (!booted) return;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -89,7 +96,7 @@ export default function App() {
     });
 
     return () => observer.disconnect();
-  }, [unlock]);
+  }, [booted, unlock]);
 
   return (
     <>
@@ -101,7 +108,7 @@ export default function App() {
       <Nav />
 
       <main style={{ position: 'relative', zIndex: 1 }}>
-        <Hero />
+        <Hero start={booted} />
         <Marquee />
         <About />
         <Projects />
@@ -114,8 +121,11 @@ export default function App() {
 
       <Footer />
 
+      <ZoneBanner enabled={booted} />
       <AchievementToast />
       <AchievementHUD />
+      <LevelUpModal />
+      <BootScreen onDone={handleBooted} />
     </>
   );
 }

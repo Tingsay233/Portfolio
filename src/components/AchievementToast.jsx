@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ACHIEVEMENTS_BY_ID } from '../lib/achievements.js';
 import { useAchievements } from '../lib/AchievementContext.jsx';
+import { pixelBurst } from '../lib/confetti.js';
 
 const VISIBLE_MS = 4600;
 
@@ -9,6 +10,12 @@ function Toast({ toast, onDone }) {
   const achievement = ACHIEVEMENTS_BY_ID[toast.id];
 
   useEffect(() => {
+    pixelBurst({
+      x: window.innerWidth - 70,
+      y: window.innerHeight - 110,
+      count: 18,
+      spread: 4,
+    });
     const hide = setTimeout(() => setLeaving(true), VISIBLE_MS);
     const remove = setTimeout(() => onDone(toast.key), VISIBLE_MS + 320);
     return () => {
