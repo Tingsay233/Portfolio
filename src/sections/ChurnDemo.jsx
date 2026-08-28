@@ -66,9 +66,8 @@ export default function ChurnDemo() {
   const seg = segment(r, f, m);
 
   return (
-    <section id="play-churn" style={{ background: 'var(--cream-100)' }}>
+    <div>
       <div className="container">
-        <span className="section-label">Play · Demo 1</span>
         <TypewriterText text="Try the churn classifier." style={{ marginBottom: '0.5rem' }} />
         <p style={{ marginBottom: '2rem', maxWidth: '560px' }}>
           Move the sliders to simulate a customer. The RFM logic from my FYP
@@ -169,7 +168,7 @@ export default function ChurnDemo() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

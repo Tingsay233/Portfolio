@@ -11,14 +11,8 @@ export default function Contact() {
   const { unlock } = useAchievements();
 
   return (
-    <section id="contact" style={{ background: 'var(--navy-900)', color: 'var(--cream-100)' }}>
+    <div>
       <div className="container">
-        <span
-          className="section-label"
-          style={{ color: 'var(--accent-soft)' }}
-        >
-          Send Letter
-        </span>
         <TypewriterText
           text="Let's build something. Or just chat."
           style={{ color: 'var(--cream-50)', marginBottom: '1rem' }}
@@ -66,6 +60,6 @@ export default function Contact() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -23,9 +23,8 @@ const ITEMS = [
 
 export default function Experience() {
   return (
-    <section id="experience">
+    <div>
       <div className="container">
-        <span className="section-label">Journal</span>
         <TypewriterText text="The path so far." style={{ marginBottom: '2.5rem' }} />
 
         <div style={{ display: 'grid', gap: '1.5rem' }}>
@@ -58,6 +57,6 @@ export default function Experience() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

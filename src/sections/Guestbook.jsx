@@ -53,9 +53,8 @@ export default function Guestbook() {
   }
 
   return (
-    <section id="guestbook" style={{ background: 'var(--cream-100)' }}>
+    <div>
       <div className="container">
-        <span className="section-label">Play · Demo 3</span>
         <TypewriterText text="Sign the guestbook." style={{ marginBottom: '0.5rem' }} />
         <p style={{ marginBottom: '2rem', maxWidth: '560px' }}>
           Leave a note — about your work, a question, or just to say hi.
@@ -193,7 +192,7 @@ export default function Guestbook() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

@@ -215,9 +215,8 @@ export default function ChessDemo() {
   const torXorIn = 4 - (fullTurns % 4);
 
   return (
-    <section id="play-chess" style={{ background: 'var(--cream-50)' }}>
+    <div>
       <div className="container">
-        <span className="section-label">Mini Games</span>
         <TypewriterText text="Kwazam Chess" style={{ marginBottom: '1.5rem' }} />
 
         <div style={{ display: 'flex', flexDirection: 'row', gap: '2.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }} className="chess-wrap">
@@ -411,6 +410,6 @@ export default function ChessDemo() {
           .chess-wrap { flex-direction: column !important; }
         }
       `}</style>
-    </section>
+    </div>
   );
 }

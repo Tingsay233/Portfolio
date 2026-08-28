@@ -159,10 +159,7 @@ export default function Hero({ start = true }) {
   const typing = activeField !== '' && activeField !== 'done';
 
   return (
-    <section
-      id="top"
-      style={{ position: 'relative', overflow: 'hidden', paddingTop: '4rem', paddingBottom: '6rem', borderBottom: 'none' }}
-    >
+    <div style={{ position: 'relative', overflow: 'hidden' }}>
       {/* ── Parallax background ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
         {[
@@ -314,6 +311,6 @@ export default function Hero({ start = true }) {
           to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
-    </section>
+    </div>
   );
 }

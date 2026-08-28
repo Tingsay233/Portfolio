@@ -2,9 +2,8 @@ import TypewriterText from '../components/TypewriterText.jsx';
 
 export default function About() {
   return (
-    <section id="about" style={{ position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', overflow: 'hidden' }}>
       <div className="container">
-        <span className="section-label">Character Profile</span>
         <TypewriterText text="Easy to get overwhelmed by my own curiosity." style={{ marginBottom: '2rem' }} />
         
         <div className="about-grid">
@@ -126,7 +125,7 @@ export default function About() {
           }
         }
       `}</style>
-    </section>
+    </div>
   );
 }
 

@@ -200,18 +200,7 @@ export default function Projects() {
   }
 
   return (
-    <section
-      id="projects"
-      style={{
-        position: 'relative',
-        backgroundImage: [
-          'radial-gradient(circle, rgba(61,43,31,0.07) 1px, transparent 1px)',
-          'linear-gradient(135deg, rgba(200,150,12,0.04) 0%, rgba(74,124,63,0.04) 50%, rgba(200,150,12,0.03) 100%)',
-        ].join(', '),
-        backgroundSize: '32px 32px, 100% 100%',
-        backgroundAttachment: 'fixed, fixed',
-      }}
-    >
+    <div style={{ position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
         {BG_DECOR.map((decor, index) => (
           <span
@@ -232,7 +221,6 @@ export default function Projects() {
       </div>
 
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <span className="section-label">Quest Log</span>
 
         <div className="quest-head">
           <div>
@@ -285,7 +273,7 @@ export default function Projects() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

@@ -3,6 +3,7 @@ import Nav from './components/Nav.jsx';
 import ScrollProgress from './components/ScrollProgress.jsx';
 import PixelParticles from './components/PixelParticles.jsx';
 import Marquee from './components/Marquee.jsx';
+import Scene from './components/Scene.jsx';
 import AchievementHUD from './components/AchievementHUD.jsx';
 import AchievementToast from './components/AchievementToast.jsx';
 import EnvelopeIntro from './components/EnvelopeIntro.jsx';
@@ -108,15 +109,95 @@ export default function App() {
       <Nav />
 
       <main style={{ position: 'relative', zIndex: 1 }}>
-        <Hero start={booted} />
+        <Scene
+          id="top"
+          number="01"
+          title="Cold Open"
+          direction="EXT. KUALA LUMPUR — DAY"
+          caption="Our subject introduces herself. She builds things for fun, and occasionally for clients."
+          frameless
+        >
+          <Hero start={booted} />
+        </Scene>
+
         <Marquee />
-        <About />
-        <Projects />
-        <Experience />
-        <ChurnDemo />
-        <ChessDemo />
-        <Guestbook />
-        <Contact />
+
+        <Scene
+          id="about"
+          number="02"
+          title="Backstory"
+          direction="INT. CAMPUS — NIGHT"
+          caption="How she got here, and what she reaches for when the brief is open-ended."
+        >
+          <About />
+        </Scene>
+
+        <Scene
+          id="projects"
+          number="03"
+          title="The Work"
+          direction="MONTAGE — FIVE BUILDS"
+          caption="Five projects, one award, and a great many late nights."
+          frameless
+        >
+          <Projects />
+        </Scene>
+
+        <Scene
+          id="experience"
+          number="04"
+          title="The Journal"
+          direction="FLASHBACK"
+          caption="Where she has been, in order."
+        >
+          <Experience />
+        </Scene>
+
+        <Scene
+          id="play-churn"
+          number="05"
+          title="Audience Participation"
+          direction="INSERT — SCREEN"
+          caption="Move the sliders. The segmentation logic from her final year project answers back."
+          tone="tint"
+          frameless
+        >
+          <ChurnDemo />
+        </Scene>
+
+        <Scene
+          id="play-chess"
+          number="06"
+          title="Boss Fight"
+          direction="PLAYABLE"
+          caption="Her Java engine, rebuilt for the browser. Capture the opposing Sau to win."
+          frameless
+        >
+          <ChessDemo />
+        </Scene>
+
+        <Scene
+          id="guestbook"
+          number="07"
+          title="Leave a Mark"
+          direction="CUTAWAY"
+          caption="Sign the book on your way through. She reads all of them."
+          tone="tint"
+          frameless
+        >
+          <Guestbook />
+        </Scene>
+
+        <Scene
+          id="contact"
+          number="08"
+          title="Fade Out"
+          direction="EXT. — DUSK"
+          caption="Roll credits. Or better — say hello."
+          tone="dark"
+        >
+          <Contact />
+        </Scene>
       </main>
 
       <Footer />
