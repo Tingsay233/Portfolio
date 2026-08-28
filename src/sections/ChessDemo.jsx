@@ -205,7 +205,10 @@ export default function ChessDemo() {
 
   function reset() {
     setPieces(initPieces()); setSelected(null); setLegalMvs([]);
-    setBlueTurn(true); setFullTurns(0); setWinner(null); setLastMove(null); setFlipped(false);
+    // Red (the player, at the bottom of an unflipped board) moves first —
+    // same as the initial state. Starting on Blue here left the board looking
+    // like Red's turn while refusing to select any red piece.
+    setBlueTurn(false); setFullTurns(0); setWinner(null); setLastMove(null); setFlipped(false);
   }
 
   const currentColor = blueTurn ? 'Blue' : 'Red';
