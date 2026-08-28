@@ -16,10 +16,12 @@ export default function Scene({
     <section id={id} className={`scene scene-${tone}`}>
       <div className="container">
         <div className="scene-slate">
-          <span className="scene-num">SC {number}</span>
-          <span className="scene-title">{title}</span>
-          <span className="scene-rule" aria-hidden="true" />
-          <span className="scene-direction">{direction}</span>
+          <span className="scene-perf" aria-hidden="true" />
+          <div className="scene-slate-row">
+            <span className="scene-num">{number}</span>
+            <span className="scene-title">{title}</span>
+            <span className="scene-direction">{direction}</span>
+          </div>
         </div>
 
         <div className={`scene-frame${frameless ? ' is-frameless' : ''}`}>
