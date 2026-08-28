@@ -5,7 +5,7 @@ import PixelParticles from './components/PixelParticles.jsx';
 import Marquee from './components/Marquee.jsx';
 import AchievementHUD from './components/AchievementHUD.jsx';
 import AchievementToast from './components/AchievementToast.jsx';
-import BootScreen from './components/BootScreen.jsx';
+import EnvelopeIntro from './components/EnvelopeIntro.jsx';
 import ZoneBanner from './components/ZoneBanner.jsx';
 import LevelUpModal from './components/LevelUpModal.jsx';
 import Hero from './sections/Hero.jsx';
@@ -56,7 +56,7 @@ export default function App() {
         c.classList.contains('card')
       );
       const idx = siblings.indexOf(el);
-      el.classList.add('reveal');
+      el.classList.add('popout');
       el.style.setProperty('--reveal-delay', `${idx * 75}ms`);
       observer.observe(el);
     });
@@ -125,7 +125,7 @@ export default function App() {
       <AchievementToast />
       <AchievementHUD />
       <LevelUpModal />
-      <BootScreen onDone={handleBooted} />
+      <EnvelopeIntro onDone={handleBooted} />
     </>
   );
 }

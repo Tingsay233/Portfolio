@@ -233,15 +233,17 @@ section:last-child {
 /* === Quest card pop-in === */
 .quest-card {
   opacity: 0;
-  transform: scale(0.8) translateY(16px);
+  transform: perspective(1000px) rotateX(-72deg);
+  transform-origin: 50% 100%;
 }
 .quest-card.quest-popped {
-  animation: questPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  transform-origin: 50% 100%;
+  animation: questPop 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 @keyframes questPop {
-  0%   { opacity: 0; transform: scale(0.8) translateY(16px); }
-  65%  { transform: scale(1.04) translateY(-4px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+  0%   { opacity: 0; transform: perspective(1000px) rotateX(-72deg) translateY(10px); }
+  70%  { opacity: 1; transform: perspective(1000px) rotateX(8deg)   translateY(-2px); }
+  100% { opacity: 1; transform: perspective(1000px) rotateX(0deg)   translateY(0); }
 }
 
 /* === Scroll Reveal === */
@@ -557,120 +559,6 @@ section:last-child {
    Game feel — title screen, zone banners, level-up modal, press states
    ========================================================================== */
 
-/* --- Title screen --- */
-.boot-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 10040;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: var(--navy-900);
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.16) 0px,
-      rgba(0, 0, 0, 0.16) 2px,
-      transparent 2px,
-      transparent 4px
-    );
-  animation: bootIn 0.35s ease both;
-}
-.boot-screen-out {
-  animation: bootOut 0.48s ease both;
-}
-
-@keyframes bootIn  { from { opacity: 0; } to { opacity: 1; } }
-@keyframes bootOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
-
-.boot-stars {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-.boot-stars span {
-  position: absolute;
-  color: var(--gold);
-  opacity: 0.35;
-  animation: bootTwinkle 2.4s ease-in-out infinite;
-}
-@keyframes bootTwinkle {
-  0%, 100% { opacity: 0.12; transform: scale(0.85); }
-  50%      { opacity: 0.5;  transform: scale(1.1);  }
-}
-
-.boot-inner {
-  position: relative;
-  text-align: center;
-  padding: 2rem;
-  animation: bootRise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-}
-@keyframes bootRise {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: none; }
-}
-
-.boot-kicker {
-  font-family: var(--font-pixel);
-  font-size: 0.45rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent-soft);
-  line-height: 2;
-  margin-bottom: 1.25rem;
-}
-.boot-title {
-  font-family: var(--font-pixel);
-  font-size: clamp(1.1rem, 5vw, 2.4rem);
-  line-height: 1.5;
-  color: var(--cream-50);
-  letter-spacing: 0.06em;
-  text-shadow:
-    3px 3px 0 var(--navy-800),
-    6px 6px 0 rgba(0, 0, 0, 0.35);
-  margin-bottom: 1.25rem;
-}
-.boot-sub {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  color: var(--cream-200);
-  margin-bottom: 2.5rem;
-}
-.boot-start {
-  font-family: var(--font-pixel);
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  line-height: 2;
-  color: var(--gold-light);
-  padding: 0.75rem 1.5rem;
-  border: 3px solid var(--gold);
-  border-radius: var(--radius);
-  background: rgba(200, 150, 12, 0.12);
-  animation: bootBlink 1.15s step-end infinite;
-}
-.boot-start:hover {
-  background: var(--gold);
-  color: var(--navy-900);
-  animation: none;
-}
-.boot-start:focus-visible {
-  outline: 3px solid var(--accent-soft);
-  outline-offset: 3px;
-  animation: none;
-}
-@keyframes bootBlink {
-  0%, 60%  { opacity: 1; }
-  61%, 100% { opacity: 0.35; }
-}
-.boot-hint {
-  margin-top: 1.5rem;
-  font-size: 0.78rem;
-  color: var(--navy-300);
-  font-style: italic;
-}
-
 /* --- Zone banner --- */
 .zone-banner {
   position: fixed;
@@ -811,10 +699,6 @@ section:last-child {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .boot-screen,
-  .boot-inner,
-  .boot-start,
-  .boot-stars span,
   .levelup-backdrop,
   .levelup-box,
   .levelup-kicker { animation: none; }
@@ -1042,3 +926,257 @@ section:last-child {
   .quest-sigil,
   .quest-filter::after { animation: none; transition: none; }
 }
+
+/* ==========================================================================
+   Opening act — the sealed letter
+   ========================================================================== */
+
+.env-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 10040;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  cursor: pointer;
+  background: var(--navy-900);
+  background-image:
+    radial-gradient(circle at 50% 42%, rgba(200, 150, 12, 0.16) 0%, transparent 55%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.14) 0px,
+      rgba(0, 0, 0, 0.14) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  animation: envSceneIn 0.4s ease both;
+}
+.env-scene.is-leaving { animation: envSceneOut 0.45s ease both; }
+
+@keyframes envSceneIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes envSceneOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
+
+.env {
+  position: relative;
+  width: min(360px, 78vw);
+  aspect-ratio: 1.55;
+  perspective: 1000px;
+  animation: envArrive 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+@keyframes envArrive {
+  from { opacity: 0; transform: translateY(26px) scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}
+
+.env-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+}
+.env-front,
+.env-flap {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: visible;
+}
+.env-front { top: 0; height: 100%; }
+
+.env-back {
+  background: var(--cream-200);
+  border: 4px solid var(--navy-800);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+/* Card tucked inside, hidden behind the front pocket until the flap opens */
+.env-letter {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 12%;
+  z-index: 2;
+  padding: 1.1rem 1.2rem;
+  text-align: left;
+  background: var(--cream-50);
+  border: 3px solid var(--navy-800);
+  border-radius: 3px;
+  box-shadow: 3px 3px 0 rgba(42, 26, 14, 0.35);
+  opacity: 0;
+  transform: translateY(6%);
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.5s,
+              opacity 0.2s ease 0.5s;
+}
+.env.is-opening .env-letter {
+  opacity: 1;
+  transform: translateY(-64%) scale(1.02);
+}
+
+.env-letter-open {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+.env-letter-body {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin-bottom: 0.4rem;
+}
+.env-letter-sign {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--navy-900);
+  text-align: right;
+}
+
+/* Front pocket — the V that hides the card */
+.env-front { z-index: 3; }
+
+/* Flap, hinged along the top edge */
+.env-flap {
+  z-index: 4;
+  top: 0;
+  height: 72%;
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform 0.55s cubic-bezier(0.5, 0, 0.35, 1) 0.18s;
+  backface-visibility: hidden;
+}
+.env.is-opening .env-flap {
+  z-index: 0;
+  transform: rotateX(-172deg);
+}
+
+/* Wax seal */
+.env-seal {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  z-index: 5;
+  width: 58px;
+  height: 58px;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 3px solid var(--navy-800);
+  background: radial-gradient(circle at 35% 30%, var(--gold-light) 0%, var(--gold) 55%, #A87A08 100%);
+  box-shadow: 3px 3px 0 rgba(42, 26, 14, 0.45);
+  font-family: var(--font-pixel);
+  font-size: 0.62rem;
+  line-height: 1;
+  color: var(--navy-900);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  animation: sealPulse 2.1s ease-in-out infinite;
+}
+.env-seal:hover {
+  transform: translate(-50%, -50%) scale(1.09);
+  box-shadow: 4px 4px 0 rgba(42, 26, 14, 0.5);
+}
+.env-seal:focus-visible {
+  outline: 3px solid var(--accent-soft);
+  outline-offset: 4px;
+}
+@keyframes sealPulse {
+  0%, 100% { box-shadow: 3px 3px 0 rgba(42, 26, 14, 0.45), 0 0 0 0 rgba(240, 192, 64, 0.45); }
+  50%      { box-shadow: 3px 3px 0 rgba(42, 26, 14, 0.45), 0 0 0 12px rgba(240, 192, 64, 0); }
+}
+.env.is-opening .env-seal { animation: sealBreak 0.35s ease forwards; }
+@keyframes sealBreak {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  35%  { opacity: 1; transform: translate(-50%, -50%) scale(1.22) rotate(-6deg); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.55) rotate(10deg); }
+}
+
+.env-prompt {
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 2;
+  color: var(--cream-200);
+  opacity: 0.75;
+  animation: envPromptBlink 1.6s ease-in-out infinite;
+}
+.env.is-opening ~ .env-prompt {
+  opacity: 0;
+  animation: none;
+  transition: opacity 0.3s ease;
+}
+@keyframes envPromptBlink {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 0.85; }
+}
+
+/* ==========================================================================
+   Stationery hero + pop-up-book reveals
+   ========================================================================== */
+
+/* Fold crease across the letter */
+.dialog-box::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 38%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(92, 51, 23, 0.16) 12%,
+    rgba(92, 51, 23, 0.16) 88%,
+    transparent 100%
+  );
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+}
+
+.letter-stamp {
+  position: absolute;
+  top: 1rem;
+  right: 1.1rem;
+  width: 58px;
+  transform: rotate(3.5deg);
+  pointer-events: none;
+  user-select: none;
+}
+@media (max-width: 760px) {
+  .letter-stamp { width: 46px; top: 0.75rem; right: 0.75rem; }
+}
+
+/* Cards fold up off the page as you reach them */
+.popout {
+  opacity: 0;
+  transform: perspective(1000px) rotateX(-70deg);
+  transform-origin: 50% 100%;
+  transition: opacity 0.5s ease,
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.popout.revealed {
+  opacity: 1;
+  transform: perspective(1000px) rotateX(0deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .env-scene,
+  .env,
+  .env-seal,
+  .env-prompt { animation: none; }
+  .env-letter,
+  .env-flap { transition: none; }
+  .popout {
+    transform: none;
+    transition: opacity 0.3s ease;
+  }
+  .quest-card {
+    transform: none;
+  }
+  .quest-card.quest-popped { animation: questFade 0.3s ease both; }
+}
+@keyframes questFade { from { opacity: 0; } to { opacity: 1; } }

@@ -14,6 +14,26 @@ const LINE1    = "I'm Say Si Ting.";
 const LINE2    = 'I build things for funnnn.';
 const BIO      = 'Final-year Computer Science student at Multimedia University, specializing in Software Engineering. I work across full-stack web, machine learning, and the occasional Shopify storefront. Currently looking for graduate roles in software engineering, QA, or technical PM.';
 
+/* Postage stamp, perforations and all */
+function LetterStamp() {
+  return (
+    <svg viewBox="0 0 44 52" className="letter-stamp" aria-hidden="true">
+      <rect x="1" y="1" width="42" height="50" rx="2"
+        fill="var(--cream-50)" stroke="var(--navy-800)" strokeWidth="2"
+        strokeDasharray="3 3" />
+      <rect x="6" y="6" width="32" height="30" fill="var(--accent)" opacity="0.14" />
+      <rect x="6" y="6" width="32" height="30" fill="none"
+        stroke="var(--navy-800)" strokeWidth="1.5" />
+      {/* a sprout, same mark as the first achievement */}
+      <path d="M22 32 V20" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="square" />
+      <path d="M22 22 q-7 -1 -8 -8 q7 -1 8 8 z" fill="var(--accent)" />
+      <path d="M22 26 q7 -1 8 -8 q-7 -1 -8 8 z" fill="var(--accent-soft)" />
+      <text x="22" y="46" textAnchor="middle"
+        fontFamily="var(--font-pixel)" fontSize="5" fill="var(--navy-800)">KL</text>
+    </svg>
+  );
+}
+
 function Cursor({ blink = false }) {
   return (
     <span style={{
@@ -172,6 +192,8 @@ export default function Hero({ start = true }) {
           className="dialog-box"
           style={{ animation: 'heroEnter 0.5s ease both', position: 'relative' }}
         >
+          <LetterStamp />
+
           {/* Skip button — visible while typing */}
           {typing && (
             <button
