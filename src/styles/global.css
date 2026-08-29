@@ -1,48 +1,46 @@
-/* === Design tokens — storyboard paper, pixel accents ===
+/* === Design tokens — Stardew Valley palette ===
  *
- * Clean base: paper grounds, hairline rules, one green accent.
- * The pixel identity is kept for the playful layers — the letter intro,
- * achievements, zone slates, mini-game chrome — which set their own
- * heavier borders on top of these.
- *
- * The legacy cream and navy names below are aliases kept so every existing
- * component restyles from this one block instead of being rewritten.
+ * The original colours. The storyboard token names below are mapped onto
+ * them so the scene chrome, cards and buttons all draw from this one block.
  */
 :root {
-  /* Paper */
-  --paper:      #FAF8F4;
-  --panel:      #FFFFFF;
-  --panel-alt:  #F3F0E9;
-  --panel-deep: #E7E2DA;
+  /* Parchment backgrounds */
+  --cream-50:  #F2E4C4;
+  --cream-100: #E8D2A0;
+  --cream-200: #D4B878;
+  --cream-300: #BFA050;
+
+  /* Browns */
+  --navy-900: #3D2B1F;
+  --navy-800: #5C3317;
+  --navy-700: #7A4A28;
+  --navy-500: #9B7040;
+  --navy-300: #C4A882;
+
+  /* Stardew green accent */
+  --accent:      #4A7C3F;
+  --accent-soft: #8DC870;
+
+  /* Gold */
+  --gold:       #C8960C;
+  --gold-light: #F0C040;
 
   /* Ink */
-  --ink:      #1C1A16;
-  --ink-soft: #4B463E;
-  --ink-muted:#8A8378;
+  --ink:      #2A1A0E;
+  --ink-soft: #5C3D1E;
+  --ink-muted:#8B6239;
 
-  /* Accent — the one colour that carries through from the old palette */
-  --accent:      #3F7D3F;
-  --accent-soft: #8DC870;
-  --gold:        #C8960C;
-  --gold-light:  #F0C040;
+  --border:        rgba(92, 51, 23, 0.22);
+  --border-strong: rgba(92, 51, 23, 0.45);
 
-  /* Rules */
-  --line:        rgba(28, 26, 22, 0.12);
-  --line-strong: rgba(28, 26, 22, 0.28);
-  --pixel-line:  #2E2A23;   /* hard border for the pixel-accent layers */
-
-  /* Legacy aliases */
-  --cream-50:  var(--panel);
-  --cream-100: var(--panel-alt);
-  --cream-200: var(--panel-deep);
-  --cream-300: #D6CFC1;
-  --navy-900:  var(--ink);
-  --navy-800:  var(--pixel-line);
-  --navy-700:  #4B463E;
-  --navy-500:  #8A8378;
-  --navy-300:  #C9C2B5;
-  --border:        var(--line);
-  --border-strong: var(--line-strong);
+  /* Storyboard names, pointing at the parchment palette */
+  --paper:      var(--cream-50);
+  --panel:      var(--cream-50);
+  --panel-alt:  var(--cream-100);
+  --panel-deep: var(--cream-200);
+  --line:        var(--border);
+  --line-strong: var(--border-strong);
+  --pixel-line:  var(--navy-800);
 
   --font-display: 'Pixelify Sans', monospace;
   --font-pixel:   'Press Start 2P', monospace;
@@ -51,12 +49,10 @@
   --font-slate:   ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
 
   --radius:    4px;
-  --radius-lg: 10px;
+  --radius-lg: 6px;
 
-  --shadow-panel: 0 1px 2px rgba(28, 26, 22, 0.05),
-                  0 12px 28px -18px rgba(28, 26, 22, 0.45);
-  --shadow-panel-lift: 0 2px 4px rgba(28, 26, 22, 0.06),
-                       0 18px 36px -20px rgba(28, 26, 22, 0.5);
+  --shadow-panel:      5px 5px 0 var(--ink);
+  --shadow-panel-lift: 7px 7px 0 var(--ink);
 }
 
 * {
@@ -71,12 +67,19 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--paper);
-  /* storyboard sheet: a faint drafting grid */
+  background-color: var(--cream-50);
+  /* parchment texture, with a faint storyboard grid over it */
   background-image:
-    linear-gradient(rgba(28, 26, 22, 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(28, 26, 22, 0.028) 1px, transparent 1px);
-  background-size: 28px 28px, 28px 28px;
+    repeating-linear-gradient(
+      45deg,
+      rgba(196, 160, 80, 0.04) 0px,
+      rgba(196, 160, 80, 0.04) 1px,
+      transparent 1px,
+      transparent 10px
+    ),
+    linear-gradient(rgba(92, 51, 23, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(92, 51, 23, 0.035) 1px, transparent 1px);
+  background-size: auto, 32px 32px, 32px 32px;
   color: var(--ink);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -144,7 +147,7 @@ section {
   align-items: center;
   gap: 0.5rem;
   padding: 0.65rem 1.25rem;
-  border-radius: 7px;
+  border-radius: var(--radius);
   font-size: 0.85rem;
   font-weight: 600;
   font-family: var(--font-sans);
@@ -154,55 +157,55 @@ section {
 }
 .btn-primary {
   background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-  box-shadow: 0 1px 2px rgba(28, 26, 22, 0.12);
+  color: var(--cream-50);
+  border-color: var(--navy-800);
+  box-shadow: 3px 3px 0 var(--ink);
 }
 .btn-primary:hover {
-  background: #35692F;
-  color: #fff;
-  border-color: #35692F;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px -8px rgba(28, 26, 22, 0.55);
+  background: var(--navy-700);
+  color: var(--cream-50);
+  border-color: var(--ink);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
 }
 .btn-secondary {
-  border: 1px solid var(--line-strong);
-  color: var(--ink);
-  background: var(--panel);
+  border: 2px solid var(--border-strong);
+  color: var(--navy-900);
+  background: var(--cream-50);
+  box-shadow: 3px 3px 0 var(--border-strong);
 }
 .btn-secondary:hover {
-  background: var(--panel-alt);
-  color: var(--ink);
-  border-color: var(--ink-muted);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px -10px rgba(28, 26, 22, 0.5);
+  background: var(--cream-100);
+  color: var(--navy-900);
+  border-color: var(--navy-800);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--navy-800);
 }
 
 /* === Cards — pixel border style === */
 .card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
+  background: var(--cream-50);
+  border: 3px solid var(--navy-800);
+  border-radius: 4px;
   padding: 1.5rem;
-  box-shadow: var(--shadow-panel);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s;
+  box-shadow: 5px 5px 0 var(--ink);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
   display: flex;
   flex-direction: column;
 }
 .card:hover {
-  transform: translateY(-3px);
-  border-color: var(--line-strong);
-  box-shadow: var(--shadow-panel-lift);
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
 }
 
 /* === Tags === */
 .tag {
   display: inline-block;
-  padding: 0.2rem 0.6rem;
-  background: var(--panel-alt);
-  color: var(--ink-soft);
-  border-radius: 999px;
-  border: 1px solid var(--line);
+  padding: 0.2rem 0.55rem;
+  background: var(--cream-100);
+  color: var(--navy-800);
+  border-radius: 4px;
+  border: 1px solid var(--border-strong);
   font-size: 0.72rem;
   font-weight: 600;
   margin: 0.15rem 0.15rem 0.15rem 0;
@@ -210,11 +213,11 @@ section {
 
 /* === Dialog box (Hero) === */
 .dialog-box {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--panel);
-  padding: 2.25rem 2.5rem 2.5rem;
-  box-shadow: var(--shadow-panel);
+  border: 4px solid var(--navy-800);
+  border-radius: 4px;
+  background: var(--cream-100);
+  padding: 2rem 2.5rem 2.5rem;
+  box-shadow: 7px 7px 0 var(--ink);
   position: relative;
 }
 
@@ -678,7 +681,9 @@ section {
 .levelup-btn { width: 100%; justify-content: center; }
 
 /* --- Press states: pixel buttons should feel clicked --- */
-.btn:active { transform: translateY(1px); }
+.btn:active { transform: translate(2px, 2px); }
+.btn-primary:active   { box-shadow: 1px 1px 0 var(--ink); }
+.btn-secondary:active { box-shadow: 1px 1px 0 var(--navy-800); }
 .achievement-toggle:active {
   transform: translate(2px, 2px);
   box-shadow: 2px 2px 0 var(--pixel-line);
@@ -1200,10 +1205,10 @@ section {
   /* clear the sticky nav when an anchor jumps to a scene */
   scroll-margin-top: 84px;
 }
-.scene-tint { background: linear-gradient(180deg, var(--panel-alt) 0%, var(--paper) 100%); }
+.scene-tint { background: linear-gradient(180deg, var(--cream-100) 0%, var(--cream-50) 100%); }
 .scene-dark {
-  background: var(--ink);
-  color: var(--panel-alt);
+  background: var(--navy-900);
+  color: var(--cream-100);
 }
 
 /* --- Filmstrip slate above each frame --- */
@@ -1273,10 +1278,10 @@ section {
 .scene-frame {
   position: relative;
   padding: 2rem 2.25rem;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-panel);
+  background: var(--cream-50);
+  border: 3px solid var(--navy-800);
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 var(--ink);
 }
 .scene-frame.is-frameless {
   background: none;
@@ -1285,9 +1290,9 @@ section {
   padding: 0;
 }
 .scene-dark .scene-frame {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(250, 248, 244, 0.16);
-  box-shadow: none;
+  background: rgba(242, 228, 196, 0.05);
+  border-color: var(--cream-200);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);
 }
 
 /* Registration marks at the frame corners */
@@ -1301,10 +1306,7 @@ section {
   pointer-events: none;
 }
 .scene-dark .scene-mark { border-color: rgba(250, 248, 244, 0.35); }
-.scene-mark-tl { top: -1px; left: -1px;  border-top-width: 2px; border-left-width: 2px;  border-top-left-radius: var(--radius-lg); }
-.scene-mark-tr { top: -1px; right: -1px; border-top-width: 2px; border-right-width: 2px; border-top-right-radius: var(--radius-lg); }
-.scene-mark-bl { bottom: -1px; left: -1px;  border-bottom-width: 2px; border-left-width: 2px;  border-bottom-left-radius: var(--radius-lg); }
-.scene-mark-br { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; border-bottom-right-radius: var(--radius-lg); }
+.scene-mark { display: none; }   /* the pixel border is the frame now */
 .scene-frame.is-frameless .scene-mark { display: none; }
 
 /* --- Caption under the frame --- */
