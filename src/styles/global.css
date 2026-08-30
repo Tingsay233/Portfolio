@@ -1309,28 +1309,51 @@ section {
 .scene-mark { display: none; }   /* the pixel border is the frame now */
 .scene-frame.is-frameless .scene-mark { display: none; }
 
-/* --- Caption under the frame --- */
-.scene-caption {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  margin-top: 0.9rem;
-  padding-left: 0.15rem;
+/* --- Narration: the story line that leads each scene --- */
+.scene-narration {
+  display: block;
+  margin: 0 0 1.35rem;
+  max-width: 60ch;
+  min-height: 3.2rem;
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 1.35rem;
   font-style: italic;
-  line-height: 1.5;
-  color: var(--ink-muted);
-  max-width: 62ch;
+  line-height: 1.45;
+  color: var(--navy-900);
 }
-.scene-dark .scene-caption { color: var(--panel-deep); opacity: 0.8; }
-.scene-caption-num {
-  font-family: var(--font-pixel);
-  font-size: 0.42rem;
-  font-style: normal;
-  line-height: 1.6;
-  color: var(--accent);
-  flex-shrink: 0;
+.scene-dark .scene-narration { color: var(--cream-50); }
+
+.scene-caret {
+  display: inline-block;
+  width: 3px;
+  height: 1.05em;
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  background: var(--accent);
+  animation: cursorBlink 1s step-end infinite;
+}
+
+/* The shot waits for the line to finish */
+.scene-frame {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scene-frame.is-told {
+  opacity: 1;
+  transform: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 @media (max-width: 640px) {
@@ -1338,7 +1361,7 @@ section {
   .scene-frame { padding: 1.25rem 1.1rem; }
   .scene-direction { display: none; }
   .scene-title { font-size: 1.15rem; }
-  .scene-caption { font-size: 0.92rem; }
+  .scene-narration { font-size: 1.1rem; min-height: 2.8rem; }
 }
 
 /* Sections bring their own .container; the scene already provides one */
@@ -1347,4 +1370,14 @@ section {
   max-width: none;
   padding: 0;
   margin: 0;
+}
+
+/* Reduced motion, stated last so it wins over the narration defaults above */
+@media (prefers-reduced-motion: reduce) {
+  .scene-frame {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .scene-caret { animation: none; display: none; }
 }

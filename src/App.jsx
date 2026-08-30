@@ -114,7 +114,6 @@ export default function App() {
           number="01"
           title="Cold Open"
           direction="EXT. KUALA LUMPUR — DAY"
-          caption="Our subject introduces herself. She builds things for fun, and occasionally for clients."
           frameless
         >
           <Hero start={booted} />
@@ -127,7 +126,7 @@ export default function App() {
           number="02"
           title="Backstory"
           direction="INT. CAMPUS — NIGHT"
-          caption="How she got here, and what she reaches for when the brief is open-ended."
+          narration="It begins on a campus in Cyberjaya, with a student who keeps picking problems slightly too big for her."
         >
           <About />
         </Scene>
@@ -137,7 +136,7 @@ export default function App() {
           number="03"
           title="The Work"
           direction="MONTAGE — FIVE BUILDS"
-          caption="Five projects, one award, and a great many late nights."
+          narration="Five builds followed. One of them won an award she had not expected to win."
           frameless
         >
           <Projects />
@@ -148,7 +147,7 @@ export default function App() {
           number="04"
           title="The Journal"
           direction="FLASHBACK"
-          caption="Where she has been, in order."
+          narration="Before any of that, there were internships, a swim academy, and a great deal of learning on the job."
         >
           <Experience />
         </Scene>
@@ -158,7 +157,7 @@ export default function App() {
           number="05"
           title="Audience Participation"
           direction="INSERT — SCREEN"
-          caption="Move the sliders. The segmentation logic from her final year project answers back."
+          narration="Her final year project learned to spot the customers about to walk away. See for yourself."
           tone="tint"
           frameless
         >
@@ -170,7 +169,7 @@ export default function App() {
           number="06"
           title="Boss Fight"
           direction="PLAYABLE"
-          caption="Her Java engine, rebuilt for the browser. Capture the opposing Sau to win."
+          narration="One semester she wrote a chess engine in pure Java, no game library. Here it is, rebuilt for the browser."
           frameless
         >
           <ChessDemo />
@@ -181,7 +180,7 @@ export default function App() {
           number="07"
           title="Leave a Mark"
           direction="CUTAWAY"
-          caption="Sign the book on your way through. She reads all of them."
+          narration="Every good story asks something of its reader."
           tone="tint"
           frameless
         >
@@ -193,7 +192,7 @@ export default function App() {
           number="08"
           title="Fade Out"
           direction="EXT. — DUSK"
-          caption="Roll credits. Or better — say hello."
+          narration="And if this sounds like someone your team needs, here is where to find her."
           tone="dark"
         >
           <Contact />
