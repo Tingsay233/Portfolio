@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ViewToggle from './ViewToggle.jsx';
 
 /*
  * `match` lists every section id the link should light up for — the mini-games
@@ -15,7 +16,7 @@ const LINKS = [
 
 const TRACKED = ['top', ...LINKS.flatMap((l) => l.match)];
 
-export default function Nav() {
+export default function Nav({ mode, onModeChange }) {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('top');
 
@@ -97,9 +98,16 @@ export default function Nav() {
             );
           })}
         </div>
+
+        {onModeChange && (
+          <ViewToggle mode={mode} onChange={onModeChange} inline />
+        )}
       </div>
       <style>{`
         .nav-links {
+          /* must be allowed to shrink, or it pushes the view toggle off-screen */
+          flex: 1 1 auto;
+          min-width: 0;
           display: flex;
           gap: 1.25rem;
           align-items: center;
@@ -108,6 +116,10 @@ export default function Nav() {
           -ms-overflow-style: none;
         }
         .nav-links::-webkit-scrollbar { display: none; }
+
+        @media (min-width: 861px) {
+          .nav-links { justify-content: flex-end; }
+        }
 
         .nav-link {
           position: relative;

@@ -4,6 +4,8 @@ import ScrollProgress from './components/ScrollProgress.jsx';
 import PixelParticles from './components/PixelParticles.jsx';
 import Marquee from './components/Marquee.jsx';
 import Scene from './components/Scene.jsx';
+import ViewToggle from './components/ViewToggle.jsx';
+import PlainView from './sections/PlainView.jsx';
 import AchievementHUD from './components/AchievementHUD.jsx';
 import AchievementToast from './components/AchievementToast.jsx';
 import EnvelopeIntro from './components/EnvelopeIntro.jsx';
@@ -30,6 +32,23 @@ const SECTION_ACHIEVEMENTS = [
 export default function App() {
   const { unlock } = useAchievements();
   const [booted, setBooted] = useState(false);
+  const [mode, setMode] = useState(function () {
+    try {
+      return localStorage.getItem('siting-view-v1') === 'plain' ? 'plain' : 'story';
+    } catch {
+      return 'story';
+    }
+  });
+
+  function changeMode(next) {
+    setMode(next);
+    try {
+      localStorage.setItem('siting-view-v1', next);
+    } catch {
+      /* private mode — the choice just won't persist */
+    }
+    window.scrollTo(0, 0);
+  }
   const handleBooted = useCallback(() => setBooted(true), []);
 
   useEffect(() => {
@@ -99,6 +118,16 @@ export default function App() {
     return () => observer.disconnect();
   }, [booted, unlock]);
 
+  if (mode === 'plain') {
+    return (
+      <>
+        <ViewToggle mode={mode} onChange={changeMode} />
+        <PlainView />
+        <Footer />
+      </>
+    );
+  }
+
   return (
     <>
       <ScrollProgress />
@@ -106,7 +135,7 @@ export default function App() {
       {/* Floating pixel particles — fixed behind everything */}
       <PixelParticles />
 
-      <Nav />
+      <Nav mode={mode} onModeChange={changeMode} />
 
       <main style={{ position: 'relative', zIndex: 1 }}>
         <Scene

@@ -70,7 +70,7 @@ function Sigil({ kind }) {
   );
 }
 
-const PROJECTS = [
+export const PROJECTS = [
   {
     id: 'retention',
     num: '01',

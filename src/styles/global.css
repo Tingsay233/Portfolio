@@ -1381,3 +1381,137 @@ section {
   }
   .scene-caret { animation: none; display: none; }
 }
+
+/* ==========================================================================
+   Plain view — the same content, none of the game
+   ========================================================================== */
+
+.view-toggle {
+  position: fixed;
+  top: 0.85rem;
+  right: 1rem;
+  z-index: 9985;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  background: var(--cream-50);
+  border: 2px solid var(--navy-800);
+  border-radius: var(--radius);
+  box-shadow: 2px 2px 0 var(--ink);
+  padding: 0.4rem 0.7rem;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.1s;
+}
+.view-toggle.is-inline {
+  position: static;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+.view-toggle:hover { background: var(--cream-100); }
+.view-toggle:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
+.view-toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.plain {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem 4rem;
+}
+
+.plain-head { margin-bottom: 3rem; }
+.plain-name {
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+.plain-role {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  margin-bottom: 0.6rem;
+}
+.plain-meta { font-size: 0.9rem; color: var(--ink-muted); margin-bottom: 1.5rem; }
+.plain-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+.plain-section { margin-bottom: 2.75rem; }
+.plain-h2 {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.plain-list { list-style: none; display: grid; gap: 1.75rem; }
+.plain-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.35rem;
+}
+.plain-item-title {
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.plain-item-when {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+.plain-item-desc {
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  max-width: 68ch;
+}
+.plain-stack {
+  margin-top: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+}
+.plain-links { margin-top: 0.4rem; display: flex; gap: 1rem; }
+.plain-links a { font-size: 0.85rem; font-weight: 600; }
+
+.plain-skills { display: grid; gap: 0.7rem; }
+.plain-skill-row {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 1rem;
+  align-items: baseline;
+}
+.plain-skill-row dt {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+.plain-skill-row dd { font-size: 0.93rem; color: var(--ink-soft); }
+.plain-note { margin-top: 1rem; font-size: 0.88rem; color: var(--ink-muted); }
+
+.plain-contact { list-style: none; display: grid; gap: 0.6rem; }
+.plain-contact li { display: flex; gap: 1rem; align-items: baseline; }
+.plain-contact span {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  min-width: 90px;
+}
+
+@media (max-width: 640px) {
+  .view-toggle { font-size: 0.7rem; padding: 0.3rem 0.5rem; }
+}
+@media (max-width: 560px) {
+  .plain { padding: 4rem 1.15rem 3rem; }
+  .plain-skill-row { grid-template-columns: 1fr; gap: 0.15rem; }
+  .plain-item-when { white-space: normal; }
+}

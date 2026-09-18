@@ -1,7 +1,7 @@
 import TypewriterText from '../components/TypewriterText.jsx';
 import { useAchievements } from '../lib/AchievementContext.jsx';
 
-const LINKS = [
+export const LINKS = [
   { label: 'Email', value: 'sitingsay@gmail.com', href: 'mailto:sitingsay@gmail.com' },
   { label: 'LinkedIn', value: '/in/say-si-ting', href: 'https://www.linkedin.com/in/say-si-ting-62051a339/' },
   { label: 'GitHub', value: 'github.com/Tingsay233', href: 'https://github.com/Tingsay233' },

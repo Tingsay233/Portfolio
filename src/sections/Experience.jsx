@@ -1,6 +1,6 @@
 import TypewriterText from '../components/TypewriterText.jsx';
 
-const ITEMS = [
+export const ITEMS = [
   {
     icon: '🏆',
     title: 'Best Presenter Award — CITIC 2026',
