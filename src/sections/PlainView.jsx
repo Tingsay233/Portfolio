@@ -1,6 +1,7 @@
 import { ITEMS as EXPERIENCE } from './Experience.jsx';
 import { LINKS } from './Contact.jsx';
 import { PROJECTS } from './Projects.jsx';
+import Logo from '../components/Logo.jsx';
 
 /*
  * The recruiter view: the same content as the story, with none of the game.
@@ -18,7 +19,10 @@ export default function PlainView() {
   return (
     <main className="plain">
       <header className="plain-head">
-        <h1 className="plain-name">Say Si Ting</h1>
+        <h1 className="plain-name">
+          <Logo size={44} title="" className="plain-logo" />
+          Say Si Ting
+        </h1>
         <p className="plain-role">
           Final-year Computer Science student at Multimedia University,
           specialising in Software Engineering. Full-stack web and machine

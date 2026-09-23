@@ -1,47 +1,67 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import GameNav from './components/GameNav.jsx';
 import { HudLeft, HudRight } from './components/Hud.jsx';
-import Chapter from './components/Chapter.jsx';
 import AchievementHUD from './components/AchievementHUD.jsx';
 import AchievementToast from './components/AchievementToast.jsx';
 import LevelUpModal from './components/LevelUpModal.jsx';
 import ViewToggle from './components/ViewToggle.jsx';
 import Footer from './components/Footer.jsx';
-import {
-  ChapterHome,
-  ChapterAbout,
-  ChapterJourney,
-  ChapterQuests,
-  ChapterEpilogue,
-} from './sections/Chapters.jsx';
-import ChurnDemo from './sections/ChurnDemo.jsx';
-import ChessDemo from './sections/ChessDemo.jsx';
-import Guestbook from './sections/Guestbook.jsx';
 import PlainView from './sections/PlainView.jsx';
+import Explore from './game/Explore.jsx';
+import PlaceModal from './game/Places.jsx';
+import MapLegend from './game/MapLegend.jsx';
+import { PLACES } from './game/world.js';
 import { useAchievements } from './lib/AchievementContext.jsx';
 
-// Chapters that award an achievement once they have been read.
-const CHAPTER_ACHIEVEMENTS = [
-  ['ch-about', 'backstory'],
-  ['ch-quests', 'quest-log'],
-  ['ch-journey', 'journal'],
-];
+// Places that award an achievement the first time they are opened.
+const PLACE_ACHIEVEMENTS = {
+  about: 'backstory',
+  quests: 'quest-log',
+  journey: 'journal',
+};
+
+const VIEW_KEY = 'siting-view-v1';
+const VISITED_KEY = 'siting-visited-v1';
+
+function load(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw === null ? fallback : JSON.parse(raw);
+  } catch {
+    return fallback;
+  }
+}
+
+function save(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* private mode — progress just won't persist */
+  }
+}
 
 export default function App() {
   const { unlock } = useAchievements();
+  const exploreRef = useRef(null);
 
-  const [mode, setMode] = useState(function () {
+  const [mode, setMode] = useState(() => {
     try {
-      return localStorage.getItem('siting-view-v1') === 'plain' ? 'plain' : 'story';
+      return localStorage.getItem(VIEW_KEY) === 'plain' ? 'plain' : 'explore';
     } catch {
-      return 'story';
+      return 'explore';
     }
   });
+  const [visited, setVisited] = useState(() => {
+    const v = load(VISITED_KEY, []);
+    return Array.isArray(v) ? v.filter((id) => PLACES.some((p) => p.id === id)) : [];
+  });
+  const [openPlace, setOpenPlace] = useState(null);
+  const [firstVisit, setFirstVisit] = useState(() => visited.length === 0);
 
-  const changeMode = useCallback(function (next) {
+  const changeMode = useCallback((next) => {
     setMode(next);
     try {
-      localStorage.setItem('siting-view-v1', next);
+      localStorage.setItem(VIEW_KEY, next);
     } catch {
       /* private mode — the choice just won't persist */
     }
@@ -53,31 +73,28 @@ export default function App() {
     unlock('arrival');
   }, [unlock]);
 
-  // Reading a chapter awards its achievement once it is properly on screen.
+  const openAt = useCallback(
+    (place) => {
+      setOpenPlace(place);
+      setVisited((prev) => {
+        if (prev.includes(place)) return prev;
+        const next = [...prev, place];
+        save(VISITED_KEY, next);
+        return next;
+      });
+      if (PLACE_ACHIEVEMENTS[place]) unlock(PLACE_ACHIEVEMENTS[place]);
+    },
+    [unlock]
+  );
+
   useEffect(() => {
-    if (mode !== 'story') return;
+    if (PLACES.every((p) => visited.includes(p.id))) unlock('cartographer');
+  }, [visited, unlock]);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const id = entry.target.dataset.achievement;
-          if (id) unlock(id);
-          observer.unobserve(entry.target);
-        });
-      },
-      { rootMargin: '-10% 0px -55% 0px', threshold: 0 }
-    );
-
-    CHAPTER_ACHIEVEMENTS.forEach(([chapterId, achievementId]) => {
-      const el = document.getElementById(chapterId);
-      if (!el) return;
-      el.dataset.achievement = achievementId;
-      observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, [mode, unlock]);
+  const closePlace = useCallback(() => setOpenPlace(null), []);
+  const petCat = useCallback(() => unlock('cat-friend'), [unlock]);
+  const introDone = useCallback(() => setFirstVisit(false), []);
+  const travelTo = useCallback((place) => exploreRef.current?.travelTo(place), []);
 
   if (mode === 'plain') {
     return (
@@ -91,33 +108,32 @@ export default function App() {
 
   return (
     <>
-      <GameNav mode={mode} onModeChange={changeMode} />
+      <GameNav mode={mode} onModeChange={changeMode} onTravel={travelTo} visited={visited} />
 
       <div className="game">
         <HudLeft />
 
-        <main className="chapters">
-          <ChapterHome />
-          <ChapterAbout />
-          <ChapterJourney />
-          <ChapterQuests />
-
-          <Chapter id="ch-arcade" tag="CHAPTER 5" title="The Arcade" sky="forest">
-            <ChurnDemo />
-            <ChessDemo />
-          </Chapter>
-
-          <Chapter id="ch-guestbook" tag="SIDE QUEST" title="Sign the Guestbook" sky="night">
-            <Guestbook />
-          </Chapter>
-
-          <ChapterEpilogue />
+        <main className="world-col">
+          <h1 className="sr-only">Say Si Ting — portfolio village</h1>
+          <Explore
+            ref={exploreRef}
+            paused={openPlace !== null}
+            visited={visited}
+            chestOpened={visited.includes('chest')}
+            onOpen={openAt}
+            onPetCat={petCat}
+            firstVisit={firstVisit}
+            onFirstVisit={introDone}
+          />
+          <MapLegend visited={visited} onTravel={travelTo} onOpen={openAt} />
         </main>
 
         <HudRight />
       </div>
 
       <Footer />
+
+      {openPlace && <PlaceModal place={openPlace} onClose={closePlace} />}
 
       <AchievementToast />
       <AchievementHUD />

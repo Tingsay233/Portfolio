@@ -1,49 +1,37 @@
-import { useEffect, useState } from 'react';
 import ViewToggle from './ViewToggle.jsx';
+import Logo from './Logo.jsx';
 import { useAchievements } from '../lib/AchievementContext.jsx';
 
+/* Top bar links walk the character to that place in the village. */
 const LINKS = [
-  { label: 'HOME', target: 'ch-home' },
-  { label: 'ABOUT', target: 'ch-about' },
-  { label: 'JOURNEY', target: 'ch-journey' },
-  { label: 'QUESTS', target: 'ch-quests' },
-  { label: 'ARCADE', target: 'ch-arcade' },
-  { label: 'CONTACT', target: 'ch-epilogue' },
+  { label: 'HOME', place: 'welcome' },
+  { label: 'ABOUT', place: 'about' },
+  { label: 'QUESTS', place: 'quests' },
+  { label: 'ARCADE', place: 'churn' },
+  { label: 'JOURNEY', place: 'journey' },
+  { label: 'CONTACT', place: 'contact' },
 ];
 
-export default function GameNav({ mode, onModeChange }) {
+export default function GameNav({ mode, onModeChange, onTravel, visited = [] }) {
   const { xp } = useAchievements();
-  const [active, setActive] = useState('ch-home');
-
-  useEffect(() => {
-    function update() {
-      const trigger = window.scrollY + window.innerHeight * 0.35;
-      let current = LINKS[0].target;
-      for (const { target } of LINKS) {
-        const el = document.getElementById(target);
-        if (el && el.getBoundingClientRect().top + window.scrollY <= trigger) current = target;
-      }
-      setActive(current);
-    }
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, []);
 
   return (
     <nav className="gnav">
-      <span className="gnav-heart" aria-hidden="true">♥</span>
+      <a href="/" className="gnav-logo" aria-label="Say Si Ting — home">
+        <Logo size={30} title="" />
+        <span className="gnav-name">Say Si Ting</span>
+      </a>
 
       <div className="gnav-links">
         {LINKS.map((link) => (
-          <a
-            key={link.target}
-            href={`#${link.target}`}
-            className={`gnav-link${active === link.target ? ' is-active' : ''}`}
-            aria-current={active === link.target ? 'true' : undefined}
+          <button
+            key={link.place}
+            type="button"
+            className={`gnav-link${visited.includes(link.place) ? ' is-visited' : ''}`}
+            onClick={() => onTravel?.(link.place)}
           >
             {link.label}
-          </a>
+          </button>
         ))}
       </div>
 

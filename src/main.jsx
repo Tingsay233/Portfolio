@@ -4,6 +4,7 @@ import App from './App.jsx';
 import { AchievementProvider } from './lib/AchievementContext.jsx';
 import './styles/global.css';
 import './styles/game.css';
+import './styles/explore.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

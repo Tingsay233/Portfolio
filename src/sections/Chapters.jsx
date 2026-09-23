@@ -7,7 +7,7 @@ import { ITEMS as EXPERIENCE } from './Experience.jsx';
 import { LINKS } from './Contact.jsx';
 import { PROJECTS } from './Projects.jsx';
 
-export function ChapterHome() {
+export function ChapterHome({ onExplore }) {
   const { unlock } = useAchievements();
 
   return (
@@ -25,7 +25,13 @@ export function ChapterHome() {
 
       <div className="chapter-stage">
         <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
-          <a href="#ch-quests" className="btn btn-primary">Let's explore →</a>
+          {onExplore ? (
+            <button type="button" className="btn btn-primary" onClick={onExplore}>
+              Let's explore →
+            </button>
+          ) : (
+            <a href="#ch-quests" className="btn btn-primary">Let's explore →</a>
+          )}
           <a
             href="/resume.pdf"
             download="SiTing_Resume.pdf"

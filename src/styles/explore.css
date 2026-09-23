@@ -1,0 +1,419 @@
+/* ==========================================================================
+   Explore — the walkable village, its prompts, the map legend and the
+   place panels. Loaded after game.css.
+   ========================================================================== */
+
+:root {
+  --brand-tan:  #D4A373;
+  --brand-teal: #1F5E68;
+}
+
+/* ── Logo in the top bar ───────────────────────────────────────────── */
+.gnav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-shrink: 0;
+  border-bottom: none;
+  color: var(--text);
+}
+.gnav-logo:hover { color: var(--brand-tan); border-bottom: none; }
+.gnav-logo .logo { display: block; flex-shrink: 0; }
+.gnav-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+@media (max-width: 640px) { .gnav-name { display: none; } }
+
+button.gnav-link {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 0 0 2px;
+  cursor: pointer;
+}
+.gnav-link.is-visited { color: var(--text); }
+.gnav-link.is-visited::before { content: '✓ '; color: var(--good); }
+
+.plain-name { display: flex; align-items: center; gap: 0.75rem; color: var(--text); }
+.plain-logo { flex-shrink: 0; }
+
+.face { overflow: hidden; }
+.face .face-sprite { width: auto; height: 88%; margin-top: 12%; }
+
+/* ── The world ─────────────────────────────────────────────────────── */
+.world-col { display: flex; flex-direction: column; gap: 0.85rem; min-width: 0; }
+
+.explore { position: relative; }
+
+.explore-view {
+  position: relative;
+  height: clamp(360px, 68vh, 640px);
+  overflow: hidden;
+  border: 3px solid var(--edge);
+  border-radius: 6px;
+  outline: 3px solid var(--brand-tan);
+  outline-offset: -6px;
+  box-shadow: 4px 4px 0 var(--edge);
+  background: #3B7A3E;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  image-rendering: pixelated;
+  background-repeat: repeat;
+  transition: transform var(--step, 150ms) linear;
+  will-change: transform;
+}
+.world img { display: block; image-rendering: pixelated; -webkit-user-drag: none; }
+
+.tile { position: absolute; background-repeat: repeat; }
+.tile-path { background-image: var(--path); }
+.tile-water {
+  background-image: var(--water-a);
+  animation: water 1.6s steps(1) infinite;
+}
+@keyframes water {
+  0%   { background-image: var(--water-a); }
+  50%  { background-image: var(--water-b); }
+}
+
+.flower { position: absolute; pointer-events: none; }
+.scenery { position: absolute; pointer-events: none; }
+
+.thing { position: absolute; }
+.thing img { width: 100%; height: 100%; }
+.thing.is-near img { filter: drop-shadow(0 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff); }
+
+.thing-tag {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  transform: translateX(-50%);
+  padding: 3px 6px 2px;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  color: #FFF8E7;
+  background: rgba(31, 94, 104, 0.92);
+  border: 2px solid var(--edge);
+  border-radius: 3px;
+  pointer-events: none;
+}
+.thing-tag.is-visited { background: rgba(58, 36, 24, 0.85); color: var(--brand-tan); }
+.thing.is-near .thing-tag { background: var(--exp); color: var(--edge); }
+.thing-portal .thing-tag,
+.thing-cottage .thing-tag { bottom: calc(100% - 6px); }
+
+.actor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: transform var(--step, 150ms) linear;
+  will-change: transform;
+}
+.actor img { position: relative; width: 100%; height: 100%; }
+.cat { transition-duration: 0.45s; }
+.cat.is-near img { filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff); }
+
+.player-shadow {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: -3px;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(20, 30, 20, 0.28);
+}
+
+.hearts {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  color: var(--hp);
+  font-size: 1.1rem;
+  text-shadow: 1px 1px 0 var(--edge);
+  animation: heartUp 1s ease-out both;
+  pointer-events: none;
+}
+@keyframes heartUp {
+  from { transform: translate(-50%, 0) scale(0.6); opacity: 1; }
+  to   { transform: translate(-50%, -28px) scale(1.2); opacity: 0; }
+}
+
+/* ── Interaction prompt and dialogue ───────────────────────────────── */
+.prompt {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  transform: translateX(-50%);
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  color: var(--text);
+  background: rgba(22, 15, 43, 0.92);
+  border: 2px solid var(--exp);
+  border-radius: 4px;
+  box-shadow: 3px 3px 0 var(--edge);
+  cursor: pointer;
+  white-space: nowrap;
+  animation: promptIn 0.18s ease-out both;
+}
+.prompt:hover { background: var(--panel-3); }
+@keyframes promptIn { from { opacity: 0; transform: translate(-50%, -6px); } }
+
+kbd {
+  display: inline-block;
+  min-width: 1.4em;
+  padding: 0 0.3em;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  line-height: 1.8;
+  text-align: center;
+  color: var(--edge);
+  background: var(--exp);
+  border-radius: 3px;
+  box-shadow: 0 2px 0 var(--edge);
+}
+
+.rpg-dialog {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 5001;
+  padding: 1.1rem 1rem 0.9rem;
+  background: #FFF8E7;
+  border: 3px solid var(--edge);
+  outline: 3px solid var(--brand-tan);
+  outline-offset: -7px;
+  border-radius: 6px;
+  box-shadow: 4px 4px 0 var(--edge);
+  cursor: pointer;
+  animation: promptIn 0.2s ease-out both;
+}
+.rpg-dialog p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: #2A1A2E;
+  max-width: 62ch;
+}
+.rpg-dialog-name {
+  position: absolute;
+  top: -14px;
+  left: 14px;
+  padding: 3px 8px 2px;
+  font-family: var(--font-pixel);
+  font-size: 0.48rem;
+  line-height: 1.8;
+  color: #FFF8E7;
+  background: var(--brand-teal);
+  border: 2px solid var(--edge);
+  border-radius: 3px;
+}
+.rpg-dialog-more {
+  display: block;
+  margin-top: 0.4rem;
+  text-align: right;
+  font-family: var(--font-retro);
+  font-size: 1rem;
+  color: #7A4A28;
+  animation: nudge 1s steps(2) infinite;
+}
+@keyframes nudge { 50% { transform: translateY(2px); } }
+
+/* ── Touch pad ─────────────────────────────────────────────────────── */
+.pad { display: none; }
+
+@media (hover: none) and (pointer: coarse), (max-width: 640px) {
+  .pad {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.7rem 0.4rem 0.2rem;
+  }
+}
+.pad-cross {
+  display: grid;
+  grid-template-columns: repeat(3, 46px);
+  grid-template-rows: repeat(3, 46px);
+  gap: 3px;
+}
+.pad button {
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 3px 0 var(--edge);
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.pad button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--edge); }
+.pad-up    { grid-column: 2; grid-row: 1; }
+.pad-left  { grid-column: 1; grid-row: 2; }
+.pad-right { grid-column: 3; grid-row: 2; }
+.pad-down  { grid-column: 2; grid-row: 3; }
+.pad .pad-a {
+  width: 68px;
+  height: 68px;
+  margin-right: 0.6rem;
+  border-radius: 50%;
+  font-family: var(--font-pixel);
+  font-size: 0.9rem;
+  color: var(--edge);
+  background: var(--exp);
+  border-color: var(--edge);
+}
+
+/* ── Map legend ────────────────────────────────────────────────────── */
+.legend .pnl-head { flex-wrap: wrap; }
+.legend-keys {
+  margin-left: auto;
+  font-family: var(--font-retro);
+  font-size: 1rem;
+  color: var(--dim);
+}
+.legend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.6rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.45rem;
+}
+.legend-list li { display: flex; gap: 3px; }
+.legend-item,
+.legend-open {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.55rem;
+  font: inherit;
+  color: var(--text);
+  text-align: left;
+  background: var(--night-2);
+  border: 2px solid var(--line-soft);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.legend-item { flex: 1; min-width: 0; }
+.legend-item:hover,
+.legend-open:hover { border-color: var(--exp); background: var(--panel-2); }
+.legend-open { color: var(--muted); padding: 0.45rem 0.6rem; }
+.legend-check { width: 1em; text-align: center; color: var(--dim); font-weight: 700; }
+.legend-item.is-visited .legend-check { color: var(--good); }
+.legend-text { display: flex; flex-direction: column; min-width: 0; }
+.legend-name { font-size: 0.82rem; font-weight: 600; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.legend-hint { font-size: 0.72rem; line-height: 1.3; color: var(--dim); white-space: nowrap; }
+
+/* ── Place panel ───────────────────────────────────────────────────── */
+.place-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10020;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(12, 8, 25, 0.7);
+  animation: levelupFade 0.2s ease both;
+}
+.place-box {
+  width: min(920px, 100%);
+  max-height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 3px solid var(--edge);
+  outline: 3px solid var(--brand-tan);
+  outline-offset: -6px;
+  border-radius: 6px;
+  box-shadow: 6px 6px 0 var(--edge);
+  animation: placeIn 0.22s ease-out both;
+}
+@keyframes placeIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } }
+.place-head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.9rem 0.6rem;
+  background: var(--brand-teal);
+  border-bottom: 3px solid var(--edge);
+  border-radius: 3px 3px 0 0;
+}
+.place-name {
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  line-height: 1.8;
+  color: #FFF8E7;
+}
+.place-close {
+  margin-left: auto;
+  padding: 0.25rem 0.55rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--edge);
+  background: var(--brand-tan);
+  border: 2px solid var(--edge);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.place-close:hover,
+.place-close:focus-visible { background: var(--exp); }
+.place-close-hint { font-family: var(--font-pixel); font-size: 0.4rem; }
+.place-body {
+  overflow-y: auto;
+  padding: 0.85rem;
+  overscroll-behavior: contain;
+}
+.place-body .chapter { box-shadow: none; }
+
+.loot {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 0.45rem;
+  margin: 0.8rem 0;
+}
+.loot-slot {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.82rem;
+  color: var(--text);
+  background: var(--night-2);
+  border: 2px solid var(--line-soft);
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world, .actor { transition: none; }
+  .tile-water, .rpg-dialog-more, .hearts, .prompt, .place-box, .place-backdrop { animation: none; }
+}
+
+/* On one column the village comes first; the HUD panels follow it. */
+@media (max-width: 820px) {
+  .world-col { order: -1; }
+  .explore-view { height: clamp(320px, 58vh, 520px); }
+}

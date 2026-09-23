@@ -1,9 +1,10 @@
 # Sprites
 
-Drop the cut-out PNGs in this folder using the filenames below. The site
-references them by these exact paths, so a file appears the moment it lands —
-no code change needed. Anything still missing simply doesn't render; nothing
-breaks.
+Every sprite below is already drawn in code (`src/game/art.js`), so the
+village is complete without any files here. To swap in hand-made art, drop a
+PNG in this folder with the matching filename: the site checks for it and
+uses it once it has loaded, with no code change needed. A file that's missing
+keeps the drawn version, so nothing breaks.
 
 Export at **1× (original pixel size)** with a transparent background. The page
 scales them up with `image-rendering: pixelated`, so a 32px sprite drawn at

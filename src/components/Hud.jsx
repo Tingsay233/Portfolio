@@ -1,9 +1,10 @@
 import Sprite from './Sprite.jsx';
+import { CHAR, CHEST, INVENTORY_ICONS } from '../game/art.js';
 import { useAchievements } from '../lib/AchievementContext.jsx';
 
 /*
- * The flanking HUD columns. Sprite slots fall back to text until the art
- * lands, so nothing here renders broken.
+ * The flanking HUD columns. Sprite slots show the art drawn in code until
+ * PNGs land in public/sprites, so nothing here renders broken.
  */
 
 function Panel({ icon, title, children }) {
@@ -69,11 +70,7 @@ export function HudLeft() {
         <div className="pnl-body">
           <div className="who">
             <div className="face">
-              <Sprite
-                name="char-idle"
-                alt=""
-                fallback={<span className="face-fallback">ST</span>}
-              />
+              <Sprite name="char-idle" alt="" fallbackSrc={CHAR.down[0]} className="face-sprite" />
             </div>
             <div>
               <div className="who-name">Say Si Ting</div>
@@ -102,7 +99,14 @@ export function HudLeft() {
         {INVENTORY.map((item) => (
           <div key={item.name} className="hud-row">
             <span className="ic">
-              <Sprite name={item.sprite} width={16} height={16} fallback={<span>{item.icon}</span>} />
+              <Sprite
+                name={item.sprite}
+                width={12}
+                height={12}
+                scale={1.5}
+                fallbackSrc={INVENTORY_ICONS[item.sprite]}
+                fallback={<span>{item.icon}</span>}
+              />
             </span>
             {item.name}
             <span className="qty">{item.qty}</span>
@@ -168,9 +172,9 @@ export function HudRight() {
 
       <Panel icon="🧰" title="SECRET CHEST">
         <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center' }}>
-          <Sprite name="chest" width={32} height={32} fallback={<span style={{ fontSize: '1.4rem' }}>🧰</span>} />
+          <Sprite name="chest" width={16} height={14} fallbackSrc={CHEST.closed} />
           <p style={{ fontSize: '0.78rem', lineHeight: 1.5, color: 'var(--muted)' }}>
-            Still writing itself. <b style={{ color: 'var(--exp)' }}>The best is yet to come.</b>
+            Hidden in a corner of the village. <b style={{ color: 'var(--exp)' }}>Find it for the résumé.</b>
           </p>
         </div>
       </Panel>

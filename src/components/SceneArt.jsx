@@ -1,4 +1,5 @@
 import Sprite from './Sprite.jsx';
+import { CAT, CHAR } from '../game/art.js';
 
 /*
  * The scene beside each chapter's dialogue. Drawn in CSS — sky, hills, ground
@@ -55,8 +56,8 @@ export default function SceneArt({ variant = 'day', actor, prop }) {
 
       {actor && (
         <span className="scene-actors">
-          <Sprite name={actor} alt="" className="scene-char" />
-          <Sprite name="cat-sit" alt="" className="scene-cat" />
+          <Sprite name={actor} alt="" className="scene-char" fallbackSrc={CHAR.down[0]} />
+          <Sprite name="cat-sit" alt="" className="scene-cat" fallbackSrc={CAT.sit} />
         </span>
       )}
     </div>
