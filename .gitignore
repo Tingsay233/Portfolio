@@ -28,3 +28,15 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# Stray project files
+env/
+venv/
+*.sqlite3
+*.docx
+
+# Unrelated projects kept locally, not part of the portfolio
+myproject/
+Kwazam_asm_update_Final/
+files/
+rendered-preview/
