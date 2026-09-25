@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 
 /* A desktop pet (桌宠): once you scroll past the hero, a cat drops onto the
    screen and roams its edges — the floor, up the walls and upside down along
-   the underside of the top bar, turning smoothly round the corners. Scrolling
-   makes it hurry; left alone on the floor it dozes off. Grab it to pick it up
+   the underside of the top bar, turning smoothly round the corners. It picks
+   its own way — walking, stopping for a sit, now and then napping on the
+   floor — and scrolling doesn't steer it. Grab it to pick it up
    and fling it: it falls with gravity, clings to a wall or ceiling it hits hard
    enough, or bounces and lands. Click it to pet it. Movement runs in a single
    requestAnimationFrame loop that writes transforms directly. */
@@ -19,13 +20,12 @@ const SLEEP = 84;
 const HAPPY = 85;
 
 const CORNER = 26; // radius of the turn round each corner, px
-const WALK_SPEED = 55; // px per second
-const MAX_BOOST = 220; // extra speed from scrolling
+const WALK_SPEED = 70; // px per second
 const GRAVITY = 2200; // px/s²
 const MAX_THROW = 2400; // px/s
 const CLING_SPEED = 320; // hit a wall at least this fast and it grabs on
 const LET_GO = 0.035; // chance per second of dropping off a wall/ceiling
-const SLEEP_AFTER = 12000; // ms without attention before it naps (floor only)
+const NAP_CHANCE = 0.2; // chance a rest on the floor turns into a nap
 
 const LINES = ['Meow!', 'Purr~', 'Keep scrolling!', 'Mrrp?', '♪ nya ♪'];
 const THROWN = ['Nyaa!!', 'Wheee!', 'Hey!'];
@@ -105,11 +105,10 @@ export default function DesktopPet() {
 
   const st = useRef({
     mode: 'idle', // walk | idle | sleep | drag | fall
-    p: 0, dir: 1, boost: 0, dist: 0,
+    p: 0, dir: 1, dist: 0,
     x: -200, y: -200, rot: 0, nx: 0, ny: 1, seg: 0,
     vx: 0, vy: 0, dragVx: 0,
-    nextAt: 0, lastActive: 0, happyUntil: 0,
-    scrollY: 0, lastDir: 0,
+    nextAt: 0, happyUntil: 0,
     down: null, samples: [], suppressClick: false,
     path: null, shown: false, raf: 0, last: 0,
   });
@@ -201,26 +200,30 @@ export default function DesktopPet() {
     const dt = Math.min((now - s.last) / 1000, 0.05);
     s.last = now;
     const reduced = reducedMotion();
-    s.boost *= Math.max(0, 1 - dt * 1.5);
 
+    if (s.mode === 'sleep' && now > s.nextAt) {
+      setMode('idle'); // wakes up by itself after a nap
+      s.nextAt = now + rand(1000, 2500);
+    }
     if (s.mode === 'walk' || s.mode === 'idle') {
       if (now > s.nextAt) {
         const r = Math.random();
         if (s.mode === 'walk') {
-          if (r < 0.35) { setMode('idle'); s.nextAt = now + rand(1500, 4000); }
-          else { if (r < 0.55) s.dir = -s.dir; s.nextAt = now + rand(2000, 5000); }
-        } else if (s.seg === 0 && now - s.lastActive > SLEEP_AFTER) {
+          if (r < 0.3) { setMode('idle'); s.nextAt = now + rand(1500, 4000); }
+          else { if (r < 0.45) s.dir = -s.dir; s.nextAt = now + rand(4000, 9000); }
+        } else if (s.seg === 0 && r < NAP_CHANCE) {
           setMode('sleep');
+          s.nextAt = now + rand(8000, 16000);
         } else if (!reduced) {
           setMode('walk');
           if (r < 0.5) s.dir = -s.dir;
-          s.nextAt = now + rand(3000, 7000);
+          s.nextAt = now + rand(4000, 9000);
         } else {
           s.nextAt = now + 4000;
         }
       }
       if (s.mode === 'walk') {
-        const v = WALK_SPEED + s.boost;
+        const v = WALK_SPEED;
         s.p += s.dir * v * dt;
         s.dist += v * dt;
       }
@@ -274,8 +277,7 @@ export default function DesktopPet() {
     else setPose(SIT);
 
     draw();
-    // asleep, nothing moves: let the loop rest until something wakes it
-    s.raf = s.shown && (s.mode !== 'sleep' || now < s.happyUntil) ? requestAnimationFrame(tick) : 0;
+    s.raf = s.shown ? requestAnimationFrame(tick) : 0;
   }
 
   function wake() {
@@ -287,9 +289,7 @@ export default function DesktopPet() {
   }
 
   function perk() {
-    const s = st.current;
-    s.lastActive = performance.now();
-    if (s.mode === 'sleep') setMode('idle');
+    if (st.current.mode === 'sleep') setMode('idle');
   }
 
   /* ---------------------------------------------------------- setup */
@@ -297,16 +297,12 @@ export default function DesktopPet() {
   useEffect(() => {
     const s = st.current;
     [SIT, DANGLE, WALK, SLEEP, HAPPY, 69].forEach((n) => { new Image().src = sprite(n); });
-    s.scrollY = window.scrollY;
     measure();
     setPose(SIT);
     draw();
 
     function onScroll() {
       const y = window.scrollY;
-      const dy = y - s.scrollY;
-      s.scrollY = y;
-
       // appear once the hero (with its own cat) is mostly out of view
       const show = y > window.innerHeight * 0.6 || s.mode === 'drag';
       if (show !== s.shown) {
@@ -320,22 +316,10 @@ export default function DesktopPet() {
           s.y = Y0 + 60;
           s.vx = rand(-150, 150);
           s.vy = 0;
-          s.lastActive = performance.now();
           setMode('fall');
         }
       }
-      if (!show || !dy) return;
-
-      perk();
-      if (!reducedMotion() && (s.mode === 'idle' || s.mode === 'walk')) {
-        const dir = Math.sign(dy);
-        if (s.lastDir && dir !== s.lastDir) s.dir = -s.dir; // scrolling back turns it round
-        s.lastDir = dir;
-        s.boost = Math.min(MAX_BOOST, s.boost + Math.abs(dy) * 3);
-        setMode('walk');
-        s.nextAt = Math.max(s.nextAt, performance.now() + 1500);
-      }
-      wake();
+      if (show) wake();
     }
 
     function onResize() {
