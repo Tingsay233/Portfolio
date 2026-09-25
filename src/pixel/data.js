@@ -39,12 +39,12 @@ export const LANGUAGES = [
 
 export const SKILLS = [
   { icon: 'icon_python.png', name: 'Python / Django', tier: 'Main', note: 'Multiple full-stack systems and REST APIs' },
-  { icon: 48, name: 'React / JavaScript', tier: 'Main', note: 'Dashboards, forms, client UIs, this portfolio' },
+  { icon: 'icon_react.png', name: 'React / JavaScript', tier: 'Main', note: 'Dashboards, forms, client UIs, this portfolio' },
   { icon: 'icon_sql.png', name: 'SQL / Databases', tier: 'Main', note: 'PostgreSQL, SQLite and MySQL project data' },
-  { icon: 59, name: 'Testing & QA', tier: 'Main', note: 'Manual testing, test case design, Selenium (V&V coursework)' },
-  { icon: 40, name: 'Java', tier: 'Projects', note: 'Object-oriented game engine with MVC' },
-  { icon: 13, name: 'ML / Analytics', tier: 'Projects', note: 'RFM, LightGBM, XGBoost and scikit-learn in FYP' },
-  { icon: 25, name: 'C++', tier: 'Coursework', note: 'Coursework and algorithm practice' },
+  { icon: 'icon_testing.png', name: 'Testing & QA', tier: 'Main', note: 'Manual testing, test case design, Selenium (V&V coursework)' },
+  { icon: 'icon_java.png', name: 'Java', tier: 'Projects', note: 'Object-oriented game engine with MVC' },
+  { icon: 'icon_ml.png', name: 'ML / Analytics', tier: 'Projects', note: 'RFM, LightGBM, XGBoost and scikit-learn in FYP' },
+  { icon: 'icon_cpp.png', name: 'C++', tier: 'Coursework', note: 'Coursework and algorithm practice' },
 ];
 
 export const TOOLS = ['Git', 'Docker', 'PostgreSQL', 'MySQL', 'Postman', 'Selenium', 'Flask', 'Figma', 'VS Code', 'Shopify Liquid', 'SCSS'];
