@@ -1,5 +1,6 @@
 /* Everything a visitor reads lives here. Sprite numbers refer to
-   public/sprites/sprite_NNN.png. */
+   public/sprites/sprite_NNN.png. `start` (YYYY or YYYY-MM) orders entries
+   along the game's career timeline. */
 
 export const PROFILE = {
   name: 'Say Si Ting',
@@ -31,15 +32,15 @@ export const ABOUT = [
 ];
 
 export const LANGUAGES = [
-  { name: 'English', level: 'Fluent' },
+  { name: 'English', level: 'Working' },
   { name: 'Mandarin', level: 'Fluent' },
   { name: 'Bahasa Melayu', level: 'Working' },
 ];
 
 export const SKILLS = [
-  { icon: 36, name: 'Python / Django', tier: 'Main', note: 'Multiple full-stack systems and REST APIs' },
+  { icon: 'icon_python.png', name: 'Python / Django', tier: 'Main', note: 'Multiple full-stack systems and REST APIs' },
   { icon: 48, name: 'React / JavaScript', tier: 'Main', note: 'Dashboards, forms, client UIs, this portfolio' },
-  { icon: 47, name: 'SQL / Databases', tier: 'Main', note: 'PostgreSQL, SQLite and MySQL project data' },
+  { icon: 'icon_sql.png', name: 'SQL / Databases', tier: 'Main', note: 'PostgreSQL, SQLite and MySQL project data' },
   { icon: 59, name: 'Testing & QA', tier: 'Main', note: 'Manual testing, test case design, Selenium (V&V coursework)' },
   { icon: 40, name: 'Java', tier: 'Projects', note: 'Object-oriented game engine with MVC' },
   { icon: 13, name: 'ML / Analytics', tier: 'Projects', note: 'RFM, LightGBM, XGBoost and scikit-learn in FYP' },
@@ -52,6 +53,7 @@ export const PROJECTS = [
   {
     icon: 52,
     title: 'E-Commerce Customer Retention System',
+    start: '2025-11',
     meta: 'Final-year project · Nov 2025 – Jul 2026',
     badge: 'Best Presenter · CITIC 2026',
     blurb:
@@ -64,6 +66,7 @@ export const PROJECTS = [
   {
     icon: 51,
     title: 'PSS Billing System',
+    start: '2026-01',
     meta: 'Client project · Jan 2026 – Aug 2026',
     blurb:
       'Production billing system for a family-run business: quotations, invoicing, customer management and payment tracking, with one-click quote-to-invoice conversion, server-side PDFs sent via WhatsApp, and Google Drive archiving.',
@@ -74,6 +77,7 @@ export const PROJECTS = [
   {
     icon: 49,
     title: 'Internal Recruitment Management System',
+    start: '2026-04',
     meta: 'D Swim Academy · Apr 2026 – Present',
     blurb:
       'Internal HR platform covering the full hiring lifecycle: tablet-based candidate intake, PIC review dashboard, offer letter and contract generation, e-signature, and onboarding.',
@@ -84,6 +88,7 @@ export const PROJECTS = [
   {
     icon: 46,
     title: 'CommuMap',
+    start: '2026',
     meta: 'Community resource mapping · 2026',
     blurb:
       'Django platform mapping clinics, shelters, libraries and food banks, with moderation and live capacity indicators.',
@@ -94,6 +99,7 @@ export const PROJECTS = [
   {
     icon: 37,
     title: 'Kwazam Chess',
+    start: '2024',
     meta: 'Java game engine · 2024–2025',
     blurb:
       'Custom chess variant with MVC structure, unique movement rules, board flipping, piece transformation, and save/load.',
@@ -105,29 +111,37 @@ export const PROJECTS = [
 
 export const EXPERIENCE = [
   {
+    type: 'work',
     icon: 49,
     title: 'Junior Programmer',
+    start: '2026-09',
     org: 'DSwim Academy',
     when: 'Sep 2026 – Present',
     desc: 'Building and maintaining the internal recruitment and onboarding system used by HR staff.',
   },
   {
+    type: 'award',
     icon: 52,
     title: 'Best Presenter Award',
+    start: '2026-05',
     org: 'CITIC 2026 · 6th International Conference on Computer, IT & Intelligent Computing',
     when: 'May 2026',
     desc: 'Awarded for the paper "E-Commerce Customer Retention Management System Using RFM Features and Gradient-Boosted Churn Prediction".',
   },
   {
+    type: 'work',
     icon: 36,
     title: 'Frontend Developer Intern',
+    start: '2025-07',
     org: 'Boolland Digital',
     when: 'Jul 2025 – Oct 2025',
     desc: 'Customized Shopify storefronts for multiple client brands using Liquid, JavaScript and SCSS in a 3–5 developer team. Built custom sections, blocks and theme schema settings on the Dawn theme so clients could manage content themselves, and fixed cross-browser and mobile issues on live production stores.',
   },
   {
+    type: 'education',
     icon: 34,
     title: 'B.Sc. (Hons.) Computer Science',
+    start: '2022-07',
     org: 'Multimedia University Cyberjaya · Software Engineering',
     when: 'Jul 2022 – Jul 2026',
     desc: 'CGPA 3.39 / 4.00. Coursework includes Verification & Validation, Software Evolution & Maintenance, OOP, Data Structures & Algorithms, Database Systems, Web Development and Machine Learning.',

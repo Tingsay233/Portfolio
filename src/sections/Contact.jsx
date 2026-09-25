@@ -14,18 +14,19 @@ export default function Contact() {
           className="section-label"
           style={{ color: 'var(--accent-soft)' }}
         >
-          Send Letter
+          Contact
         </span>
         <TypewriterText
-          text="Let's build something. Or just chat."
+          text="Open to graduate opportunities."
           style={{ color: 'var(--cream-50)', marginBottom: '1rem' }}
         />
-        <p style={{ color: 'var(--cream-200)', maxWidth: '560px', marginBottom: '2.5rem' }}>
-          I'm currently open to graduate roles in software engineering, QA, and
-          technical PM. Based in Kuala Lumpur, open to remote.
+        <p style={{ color: 'var(--cream-200)', maxWidth: '620px', marginBottom: '2.5rem' }}>
+          I am based in Kuala Lumpur and open to graduate roles in software
+          engineering, QA, and product-focused technical teams. I am also open
+          to remote or hybrid opportunities.
         </p>
 
-        <div style={{ display: 'grid', gap: '0.75rem', maxWidth: '480px' }}>
+        <div style={{ display: 'grid', gap: '0.75rem', maxWidth: '520px' }}>
           {LINKS.map((link) => (
             <a
               key={link.label}
@@ -36,6 +37,7 @@ export default function Contact() {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                gap: '1rem',
                 padding: '1rem 1.25rem',
                 background: 'var(--navy-800)',
                 borderRadius: 'var(--radius)',
@@ -43,8 +45,12 @@ export default function Contact() {
                 borderBottom: 'none',
                 transition: 'background 0.2s',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--navy-700)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'var(--navy-800)')}
+              onMouseEnter={(event) => {
+                event.currentTarget.style.background = 'var(--navy-700)';
+              }}
+              onMouseLeave={(event) => {
+                event.currentTarget.style.background = 'var(--navy-800)';
+              }}
             >
               <span
                 style={{
@@ -57,7 +63,7 @@ export default function Contact() {
               >
                 {link.label}
               </span>
-              <span style={{ fontSize: '0.95rem' }}>{link.value} →</span>
+              <span style={{ fontSize: '0.95rem', textAlign: 'right' }}>{link.value} -&gt;</span>
             </a>
           ))}
         </div>

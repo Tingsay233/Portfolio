@@ -48,9 +48,9 @@ export default function Nav() {
         </a>
         <div className="nav-links" style={{ display: 'flex', gap: '1.5rem' }}>
           {[
-            ['Quest Log', 'projects'],
-            ['Mini Games', 'play'],
-            ['Send Letter', 'contact'],
+            ['Projects', 'projects'],
+            ['Demos', 'play'],
+            ['Contact', 'contact'],
           ].map(([label, id]) => (
             <a
               key={id}

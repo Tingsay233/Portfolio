@@ -208,7 +208,7 @@ export default function ChessDemo() {
   return (
     <section id="play" style={{ background: 'var(--cream-50)' }}>
       <div className="container">
-        <span className="section-label">Mini Games</span>
+        <span className="section-label">Demos</span>
         <TypewriterText text="Kwazam Chess" style={{ marginBottom: '1.5rem' }} />
 
         <div style={{ display: 'flex', flexDirection: 'row', gap: '2.5rem', alignItems: 'flex-start', flexWrap: 'wrap' }} className="chess-wrap">
@@ -276,7 +276,6 @@ export default function ChessDemo() {
                     aspectRatio: '1',
                     background: bg,
                     border: 'none',
-                    cursor: 'pointer',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',

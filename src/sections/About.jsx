@@ -4,65 +4,84 @@ export default function About() {
   return (
     <section id="about" style={{ position: 'relative', overflow: 'hidden' }}>
       <div className="container">
-        <span className="section-label">Character Profile</span>
-        <TypewriterText text="Easy to get overwhelmed by my own curiosity." style={{ marginBottom: '2rem' }} />
-        
+        <span className="section-label">About</span>
+        <TypewriterText text="Full-stack builder with a product mindset." style={{ marginBottom: '2rem' }} />
+
         <div className="about-grid">
-          {/* Left Column: Story */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <p>
-              I'm a final-year CS student at MMU Cyberjaya, focusing on software
-              engineering. Most of what I build lives somewhere between web apps
-              and machine learning — I like problems where the interface matters
-              <em> and</em> the math underneath has to be right.
+              I am a final-year Computer Science student at Multimedia University
+              Cyberjaya, specializing in Software Engineering. My work is mostly
+              around full-stack web development, business systems, and practical
+              machine learning features.
             </p>
             <p>
               My final year project is an{' '}
               <strong style={{ color: 'var(--navy-900)' }}>
                 e-commerce customer retention system
               </strong>{' '}
-              that uses RFM segmentation and gradient-boosted models (LightGBM,
-              XGBoost) to help small businesses spot at-risk customers before
-              they churn. I presented a paper on it at{' '}
-              <strong style={{ color: 'var(--navy-900)' }}>CITIC 2026</strong>{' '}
-              and somehow walked away with a Best Presenter Award.
+              that uses RFM segmentation and gradient-boosted models to help
+              small businesses identify at-risk customers before they churn. The
+              project was presented at CITIC 2026 and received a Best Presenter
+              Award.
             </p>
             <p>
-              Outside the FYP I've built a Shopify storefront or two during my
-              internship at <strong>Boolland Digital</strong>, a billing system
-              for a family-run business, and an internal recruitment tool for a
-              swimming institution. I work mostly in Python, JavaScript, Java, 
-              and C++ — and I think carefully about what I'm shipping. Probably too
-              carefully, sometimes.
+              I have also worked on Shopify storefront customization during my
+              internship at <strong>Boolland Digital</strong>, a client billing
+              system, a LAN-based recruitment system, and community mapping
+              software. I enjoy projects where clean implementation, readable UI,
+              and real workflow needs all matter.
             </p>
             <p>
-              When I'm not coding I'm usually playing a single-player story game
-              (Cyberpunk, RDR2, Detroit), avoiding anything PVP, or writing
-              something weird. I'm bilingual in English and Mandarin, working in
-              Bahasa Melayu.
+              I am fluent in Mandarin, with working knowledge of Bahasa Melayu and English.
+              I am currently looking for graduate opportunities where I can keep
+              improving as a developer while contributing to useful software.
             </p>
           </div>
 
-          {/* Right Column: Stats */}
           <div className="stats-panel">
             <h3 style={{ fontFamily: 'var(--font-pixel)', fontSize: '1rem', marginBottom: '1.5rem', color: 'var(--navy-900)' }}>
-              Current Attributes
+              Core Skills
             </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-              <StatBar label="Python / Django" percentage={85} />
-              <StatBar label="React / JavaScript" percentage={80} />
-              <StatBar label="C++" percentage={75} />
-              <StatBar label="Java" percentage={70} />
-              <StatBar label="ML (LightGBM / XGBoost)" percentage={65} />
-              <StatBar label="SQL / Databases" percentage={75} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <SkillLevel
+                label="Python / Django"
+                level={85}
+                note="Built multiple full-stack systems and APIs"
+              />
+              <SkillLevel
+                label="React / JavaScript"
+                level={82}
+                note="Built portfolio, dashboards, forms, and client UIs"
+              />
+              <SkillLevel
+                label="SQL / Databases"
+                level={76}
+                note="Worked with PostgreSQL and SQLite project data"
+              />
+              <SkillLevel
+                label="Java"
+                level={72}
+                note="Built object-oriented game logic with MVC structure"
+              />
+              <SkillLevel
+                label="C++"
+                level={68}
+                note="Used in coursework and algorithm practice"
+              />
+              <SkillLevel
+                label="ML Models / Analytics"
+                level={66}
+                note="Applied RFM, LightGBM, and XGBoost in FYP"
+              />
             </div>
-            
+
             <div style={{ marginTop: '2.5rem' }}>
               <h3 style={{ fontFamily: 'var(--font-pixel)', fontSize: '1rem', marginBottom: '1rem', color: 'var(--navy-900)' }}>
-                Equipped Items
+                Tools
               </h3>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                {['Git', 'Docker', 'PostgreSQL', 'Figma', 'VS Code'].map(item => (
+                {['Git', 'Docker', 'PostgreSQL', 'Figma', 'VS Code'].map((item) => (
                   <span key={item} className="tag" style={{ background: 'var(--cream-100)', border: '1px solid var(--border)' }}>
                     {item}
                   </span>
@@ -89,34 +108,63 @@ export default function About() {
           height: fit-content;
         }
 
-        .stat-bar-container {
-          display: flex;
-          flex-direction: column;
-          gap: 0.4rem;
+        .skill-level-item {
+          padding: 0.85rem;
+          background: rgba(232, 210, 160, 0.55);
+          border: 1px solid var(--border);
+          border-radius: var(--radius);
         }
 
-        .stat-bar-header {
+        .skill-level-top {
           display: flex;
           justify-content: space-between;
+          gap: 1rem;
+          align-items: center;
+          margin-bottom: 0.45rem;
+        }
+
+        .skill-level-name {
           font-family: var(--font-sans);
           font-size: 0.85rem;
           font-weight: 600;
           color: var(--ink);
         }
 
-        .stat-bar-track {
+        .skill-level-note {
+          margin-top: 0.45rem;
+          font-size: 0.76rem;
+          line-height: 1.45;
+          color: var(--ink-muted);
+        }
+
+        .skill-level-badge {
+          flex-shrink: 0;
+          font-family: var(--font-pixel);
+          font-size: 0.46rem;
+          font-weight: 700;
+          color: var(--cream-50);
+          background: var(--accent);
+          border: 1px solid var(--navy-800);
+          box-shadow: 2px 2px 0 var(--ink);
+          border-radius: var(--radius);
+          padding: 0.22rem 0.45rem;
+          letter-spacing: 0.04em;
+          line-height: 2;
+        }
+
+        .skill-level-track {
           width: 100%;
-          height: 12px;
+          height: 10px;
           background: var(--cream-100);
-          border: 1px solid var(--border);
+          border: 1px solid var(--border-strong);
           border-radius: 2px;
           overflow: hidden;
         }
 
-        .stat-bar-fill {
+        .skill-level-fill {
           height: 100%;
-          background: var(--accent);
-          transition: width 1s ease-out;
+          background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 100%);
+          transition: width 0.8s ease;
         }
 
         @media (max-width: 960px) {
@@ -130,15 +178,23 @@ export default function About() {
   );
 }
 
-function StatBar({ label, level, percentage }) {
+function SkillLevel({ label, level, note }) {
   return (
-    <div className="stat-bar-container">
-      <div className="stat-bar-header">
-        <span>{label}</span>
+    <div className="skill-level-item">
+      <div className="skill-level-top">
+        <div className="skill-level-name">
+          {label}
+        </div>
+        <span className="skill-level-badge">
+          Lv. {level}
+        </span>
       </div>
-      <div className="stat-bar-track">
-        <div className="stat-bar-fill" style={{ width: `${percentage}%` }}></div>
+      <div className="skill-level-track">
+        <div className="skill-level-fill" style={{ width: `${level}%` }} />
       </div>
+      <p className="skill-level-note">
+        {note}
+      </p>
     </div>
   );
 }

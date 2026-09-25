@@ -1,5 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Sprite, Panel, SectionHead, Walker } from './ui.jsx';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Sprite, Panel, SectionHead } from './ui.jsx';
+import Playfield, { PetCat } from './Playfield.jsx';
+import ExperienceStage from './ExperienceStage.jsx';
+import DesktopPet from './DesktopPet.jsx';
+import { ViewSwitch } from '../view.jsx';
+
+const Game = lazy(() => import('./game/Game.jsx'));
 import {
   PROFILE, HIGHLIGHTS, ABOUT, LANGUAGES, SKILLS, TOOLS, PROJECTS, EXPERIENCE, NAV,
 } from './data.js';
@@ -61,6 +68,7 @@ function TopBar() {
             </a>
           ))}
         </nav>
+        <ViewSwitch className="topbar__switch" />
         <a className="pbtn pbtn--gold topbar__cta" href={PROFILE.resume} download="SiTing_Resume.pdf">
           Resume
         </a>
@@ -137,8 +145,11 @@ function Sidebar() {
 /* ---------------------------------------------------------------- hero */
 
 function Hero() {
+  const sceneRef = useRef(null);
+  const dialogRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
   return (
-    <section className="scene scene--day hero" id="top" aria-label="Introduction">
+    <section className="scene scene--day hero" id="top" aria-label="Introduction" ref={sceneRef}>
       <div className="scene__art" aria-hidden="true">
         <Sprite n={121} h={52} className="cloud c1" />
         <Sprite n={133} h={38} className="cloud c2" />
@@ -147,14 +158,25 @@ function Hero() {
         <div className="mountains" />
         <Sprite n="castle.png" h={190} className="hero__castle" />
         <Sprite n={125} h={140} className="hero__tree" />
-        <Sprite n={1} h={128} className="hero__me bob" />
-        <Sprite n={80} h={50} className="hero__cat" />
         <Sprite n={101} h={110} className="hero__lamp" />
         <div className="ground" />
       </div>
 
+      <Playfield sceneRef={sceneRef} dialogRef={dialogRef} />
+
+      <button type="button" className="play-btn" onClick={() => setPlaying(true)} aria-label="Play the portfolio platformer game">
+        <img src="/sprites/sprite_079.png" alt="" draggable="false" />
+      </button>
+      {playing &&
+        createPortal(
+          <Suspense fallback={null}>
+            <Game onClose={() => setPlaying(false)} />
+          </Suspense>,
+          document.body
+        )}
+
       <div className="scene__content">
-        <div className="dialog hero__dialog">
+        <div className="dialog hero__dialog" ref={dialogRef}>
           <div className="status-pill"><span className="dot" /> Open to QA &amp; dev roles · {PROFILE.location}</div>
           <span className="chapter">Hello, I'm</span>
           <h1>{PROFILE.name}</h1>
@@ -286,25 +308,35 @@ function Projects() {
 
 /* ---------------------------------------------------------------- experience */
 
+// the story runs oldest → newest; the cards below stay newest-first
+const STAGE_STOPS = [...EXPERIENCE]
+  .sort((a, b) => (a.start || '').localeCompare(b.start || ''))
+  .map((e) => ({ kind: e.type, year: (e.start || '').slice(0, 4), title: e.title }));
+
 function Experience() {
+  const stageRef = useRef(null);
+  const [active, setActive] = useState('');
+  const play = (title) => stageRef.current?.goTo(STAGE_STOPS.findIndex((st) => st.title === title));
+
   return (
     <section className="block" id="experience">
-      <SectionHead chapter="Chapter 4" title="Experience & Education" />
-      <div className="scene scene--dusk strip" aria-hidden="true">
-        <div className="scene__art">
-          <Sprite n={132} h={30} className="moon" />
-          <div className="mountains" />
-          <Sprite n={125} h={110} className="d-tree1" />
-          <Sprite n={120} h={100} className="d-lamp" />
-          <Sprite n={100} h={52} className="d-sign" />
-          <Sprite n={116} h={40} className="d-bush" />
-          <Walker h={66} />
-          <div className="ground ground--path" />
-        </div>
-      </div>
+      <SectionHead
+        chapter="Chapter 4"
+        title="Experience & Education"
+        sub="Watch the story play out, or click an entry to jump to it."
+      />
+      <ExperienceStage
+        ref={stageRef}
+        stops={STAGE_STOPS}
+        onActive={(i) => setActive(i >= 0 ? STAGE_STOPS[i].title : '')}
+      />
       <ol className="timeline">
         {EXPERIENCE.map((e) => (
-          <li key={e.title} className="panel">
+          <li
+            key={e.title}
+            className={`panel${active === e.title ? ' is-active' : ''}`}
+            onClick={() => play(e.title)}
+          >
             <span className="slot"><Sprite n={e.icon} h={26} /></span>
             <div>
               <div className="timeline__top">
@@ -314,6 +346,14 @@ function Experience() {
               <div className="timeline__org">{e.org}</div>
               <p>{e.desc}</p>
             </div>
+            <button
+              type="button"
+              className="timeline__play"
+              onClick={(ev) => { ev.stopPropagation(); play(e.title); }}
+              aria-label={`Play the ${e.title} scene`}
+            >
+              ▶
+            </button>
           </li>
         ))}
       </ol>
@@ -371,9 +411,9 @@ function Contact() {
         <Sprite n={132} h={34} className="n-moon" />
         <Sprite n={127} h={200} className="n-portal" />
         <Sprite n={86} h={96} className="n-fire" />
-        <Sprite n={85} h={52} className="n-cat" />
         <div className="ground" />
       </div>
+      <PetCat className="n-cat" h={52} />
       <div className="scene__content">
         <div className="dialog contact__dialog">
           <span className="chapter">Epilogue</span>
@@ -425,6 +465,7 @@ export default function PixelApp() {
           </footer>
         </main>
       </div>
+      <DesktopPet />
     </>
   );
 }
